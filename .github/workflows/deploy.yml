@@ -46,18 +46,13 @@ jobs:
         env:
           GENERATE_SOURCEMAP: false
 
-      - name: Sitemap Generation
-        run: cd src/utils && node generate-sitemap.mjs
-        # If site generaton fails, continue to deploy
-        continue-on-error: true
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/
+          path: dist/
 
       - name: Deploy to GitHub Pages
         id: deployment
