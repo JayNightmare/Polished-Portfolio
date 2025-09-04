@@ -1,0 +1,99 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the Website
+title: "[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: ✨ Feature Description
+      description: A clear and concise description of the feature you'd like to see.
+      placeholder: Describe the feature...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solution
+    attributes:
+      label: 🎯 Problem/Use Case
+      description: What problem does this feature solve? What's your use case?
+      placeholder: Explain the problem this feature would solve...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: 💡 Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: Describe your proposed solution...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: Describe alternatives you've considered...
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: 📂 Feature Category
+      description: What category does this feature fall into?
+      options:
+        - "Communication"
+        - "User Interface & Experience"
+        - "Parameter Management"
+        - "Memory Slot Operations"
+        - "PWA & Mobile Features"
+        - "Performance & Optimization"
+        - "Accessibility"
+        - "Documentation"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 🎯 Priority
+      description: How important is this feature to you?
+      options:
+        - "Low - Nice to have"
+        - "Medium - Would be helpful"
+        - "High - Really need this"
+        - "Critical - Can't use app without it"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: implementation-help
+    attributes:
+      label: 🤝 Implementation
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I'd like to help implement this feature
+        - label: I can provide testing/feedback
+        - label: I can help with documentation
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: 🎨 Mockups/Examples
+      description: If applicable, add mockups, sketches, or examples of similar features.
+      placeholder: Drag and drop images here or describe examples...
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: Add any other context, examples, or technical details.
+      placeholder: Any additional information...
