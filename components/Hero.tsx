@@ -3,6 +3,9 @@ import { Badge } from './ui/badge';
 import { Github, Linkedin, Mail, Download, ArrowDown, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
+import Logo from '../src/assets/icon.svg';
+
+const logo = Logo;
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -94,7 +97,7 @@ export function Hero() {
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
           <motion.div>
-            <img src="/src/assets/icon.svg" alt="Logo" className="w-[24px] h-[24px] mx-auto mb-4" />
+            <img src={logo} alt="Logo" className="w-[24px] h-[24px] mx-auto mb-4" />
           </motion.div>
 
           <motion.div
