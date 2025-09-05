@@ -130,6 +130,10 @@ export function useGitHub({ username, featuredRepos = [] }: UseGitHubProps): Use
               id: org.id,
               name: org.login,
               full_name: org.login,
+              owner: {
+                type: 'Organization',
+                login: org.login,
+              },
               description: org.description || `Organization: ${org.login}`,
               avatar_url: org.avatar_url,
               html_url: `https://github.com/${org.login}`,

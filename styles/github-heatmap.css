@@ -1,0 +1,48 @@
+/* GitHub Heatmap color classes for light and dark mode */
+.gh-heatmap-0 {
+    background-color: #f3f4f6;
+}
+
+.gh-heatmap-1 {
+    background-color: #fbcfe8;
+}
+
+.gh-heatmap-2 {
+    background-color: #f9a8d4;
+}
+
+.gh-heatmap-3 {
+    background-color: #c7d2fe;
+}
+
+.gh-heatmap-4 {
+    background-color: #a5b4fc;
+}
+
+.gh-heatmap-5 {
+    background-color: #7c3aed;
+}
+
+.dark .gh-heatmap-0 {
+    background-color: #0a0a0a;
+}
+
+.dark .gh-heatmap-1 {
+    background-color: #701a75;
+}
+
+.dark .gh-heatmap-2 {
+    background-color: #a21caf;
+}
+
+.dark .gh-heatmap-3 {
+    background-color: #c4b5fd;
+}
+
+.dark .gh-heatmap-4 {
+    background-color: #a78bfa;
+}
+
+.dark .gh-heatmap-5 {
+    background-color: #f472b6;
+}

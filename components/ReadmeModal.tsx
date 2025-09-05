@@ -37,18 +37,25 @@ export default function ReadmeModal({ repo, isOpen, onClose }: ReadmeModalProps)
       const contributorsCacheKey = `github_contributors_${repo.full_name}`;
 
       try {
+        // Determine if repo is an Organization and set readme fetch path
+        let readmePath;
+        if (repo?.owner?.type === 'Organization') {
+          // Org profile README is always at .github/profile/README.md
+          readmePath = `https://api.github.com/repos/${repo.owner.login}/.github/contents/profile/README.md?ref=main`;
+        } else {
+          console.log('Not an organization repo, using standard README path.');
+          readmePath = `https://api.github.com/repos/${repo.full_name}/readme`;
+        }
+
         // Check for cached README
         const cachedReadme = sessionStorage.getItem(readmeCacheKey);
         if (cachedReadme) {
           setReadme(cachedReadme);
         } else {
           // Fetch README
-          const readmeResponse = await fetch(
-            `https://api.github.com/repos/${repo.full_name}/readme`,
-            {
-              headers: { Accept: 'application/vnd.github.v3.raw' },
-            }
-          );
+          const readmeResponse = await fetch(readmePath, {
+            headers: { Accept: 'application/vnd.github.v3.raw' },
+          });
           const readmeText = readmeResponse.ok ? await readmeResponse.text() : 'No README found.';
           setReadme(readmeText);
           sessionStorage.setItem(readmeCacheKey, readmeText);

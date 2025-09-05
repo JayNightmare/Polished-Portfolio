@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 import { AnimatedBackground } from './components/AnimatedBackground';
 import AllProjects from './components/AllProjects';
 import './styles/globals.css';
+import './styles/github-heatmap.css';
 
 export default function App() {
   return (

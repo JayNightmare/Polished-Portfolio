@@ -9,25 +9,25 @@ export function Footer() {
     {
       name: 'GitHub',
       icon: <Github className="h-4 w-4" />,
-      url: 'https://github.com'
+      url: 'https://github.com/JayNightmare',
     },
     {
-      name: 'LinkedIn', 
+      name: 'LinkedIn',
       icon: <Linkedin className="h-4 w-4" />,
-      url: 'https://linkedin.com'
+      url: 'https://linkedin.com/in/jordan-s-bell',
     },
     {
       name: 'Email',
       icon: <Mail className="h-4 w-4" />,
-      url: 'mailto:hello@example.com'
-    }
+      url: 'mailto:jn3.enquiries@gmail.com',
+    },
   ];
 
   const quickLinks = [
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Contact', href: '#contact' },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -51,8 +51,8 @@ export function Footer() {
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground mb-6 max-w-md">
-                Passionate about creating exceptional digital experiences through 
-                clean code, innovative solutions, and user-centered design.
+                Passionate about creating exceptional digital experiences through clean code,
+                innovative solutions, and user-centered design.
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (
@@ -93,15 +93,13 @@ export function Footer() {
                 <p className="text-sm text-muted-foreground">
                   Available for freelance work and collaboration
                 </p>
-                <a 
-                  href="mailto:hello@example.com"
+                <a
+                  href="mailto:jn3.enquiries@gmail.com"
                   className="text-sm text-primary hover:underline"
                 >
-                  hello@example.com
+                  jn3.enquiries@gmail.com
                 </a>
-                <p className="text-sm text-muted-foreground">
-                  San Francisco, CA
-                </p>
+                <p className="text-sm text-muted-foreground">London, UK</p>
               </div>
             </div>
           </div>
