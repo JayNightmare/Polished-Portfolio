@@ -81,23 +81,31 @@ export function Skills() {
           const calendar = data.data?.user?.contributionsCollection?.contributionCalendar;
 
           if (calendar) {
-            const contributionDays = calendar.weeks.flatMap((week: any) => week.contributionDays);
+            // Keep the week structure for column-major display
+            const weeks = calendar.weeks;
             const total = calendar.totalContributions;
+
+            // Flatten for streak calculation only
+            const contributionDays = weeks.flatMap((week: any) => week.contributionDays);
 
             // Calculate streaks
             const { currentStreak, longestStreak } = calculateStreaks(contributionDays);
 
             const stats = { total, currentStreak, longestStreak };
 
-            setContributions(contributionDays);
+            // Store weeks data for column-major rendering
+            setContributions(weeks);
             setContributionStats(stats);
 
             // Cache the results
             sessionStorage.setItem(
               cacheKey,
-              JSON.stringify({ contributions: contributionDays, stats })
+              JSON.stringify({ contributions: weeks, stats })
             );
           }
+        } else {
+          // Force mock data generation for demo
+          generateMockContributions();
         }
       } catch (error) {
         console.error('Failed to fetch GitHub contributions:', error);
@@ -151,34 +159,49 @@ export function Skills() {
 
   // Generate mock data if API fails
   const generateMockContributions = () => {
-    const mockDays = [];
+    const weeks: any[] = [];
     const today = new Date();
+    
+    // Generate 53 weeks (GitHub standard)
+    for (let weekIndex = 0; weekIndex < 53; weekIndex++) {
+      const week: any = {
+        contributionDays: []
+      };
+      
+      // Generate 7 days for each week
+      for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
+        const dayOffset = (52 - weekIndex) * 7 + (6 - dayIndex);
+        const date = new Date(today);
+        date.setDate(today.getDate() - dayOffset);
 
-    for (let i = 364; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(today.getDate() - i);
+        const contributionCount = Math.random() > 0.7 ? Math.floor(Math.random() * 8) : 0;
 
-      const contributionCount = Math.random() > 0.7 ? Math.floor(Math.random() * 1) : 0;
-
-      mockDays.push({
-        date: date.toISOString().split('T')[0],
-        contributionCount,
-        color:
-          contributionCount === 0
-            ? '#ebedf0'
-            : contributionCount <= 2
-              ? '#65216eff'
-              : contributionCount <= 4
-                ? '#9730a1ff'
-                : contributionCount <= 6
-                  ? '#b540c4ff'
-                  : '#d99be9ff',
-      });
+        week.contributionDays.push({
+          date: date.toISOString().split('T')[0],
+          contributionCount,
+          color:
+            contributionCount === 0
+              ? '#ebedf0'
+              : contributionCount <= 2
+                ? '#65216eff'
+                : contributionCount <= 4
+                  ? '#9730a1ff'
+                  : contributionCount <= 6
+                    ? '#b540c4ff'
+                    : '#d99be9ff',
+        });
+      }
+      
+      weeks.push(week);
     }
 
-    setContributions(mockDays);
+    // Calculate total contributions for stats
+    const allDays: any[] = weeks.flatMap((week: any) => week.contributionDays);
+    const total = allDays.reduce((sum: number, day: any) => sum + day.contributionCount, 0);
+
+    setContributions(weeks);
     setContributionStats({
-      total: mockDays.reduce((sum, day) => sum + day.contributionCount, 0),
+      total,
       currentStreak: 7,
       longestStreak: 23,
     });
@@ -525,9 +548,9 @@ export function Skills() {
 
                   <div className="overflow-x-auto">
                     <div className="inline-block min-w-full">
-                      <div className="grid grid-cols-53 gap-1 text-xs">
+                      <div className="flex flex-col gap-1 text-xs">
                         {/* Month labels */}
-                        <div className="col-span-53 flex justify-between text-muted-foreground mb-2">
+                        <div className="flex justify-between text-muted-foreground mb-2">
                           {[
                             'Jan',
                             'Feb',
@@ -548,39 +571,57 @@ export function Skills() {
                           ))}
                         </div>
 
-                        {/* Contribution squares */}
-                        {contributions.slice(-371).map((day, index) => {
-                          const contributionLevel =
-                            day.contributionCount === 0
-                              ? 0
-                              : day.contributionCount <= 2
-                                ? 1
-                                : day.contributionCount <= 4
-                                  ? 2
-                                  : day.contributionCount <= 6
-                                    ? 3
-                                    : 4;
+                        {/* Heatmap grid - Column-major layout */}
+                        <div className="flex gap-1">
+                          {/* Day labels (Sun-Sat) */}
+                          <div className="flex flex-col gap-1 text-right text-xs text-muted-foreground mr-2">
+                            <div className="h-3"></div> {/* Spacer for alignment */}
+                            <div className="h-3 flex items-center text-xs">Sun</div>
+                            <div className="h-3"></div>
+                            <div className="h-3 flex items-center text-xs">Tue</div>
+                            <div className="h-3"></div>
+                            <div className="h-3 flex items-center text-xs">Thu</div>
+                            <div className="h-3"></div>
+                          </div>
+                          
+                          {/* Week columns */}
+                          {Array.isArray(contributions) && contributions.map((week: any, weekIndex: number) => (
+                            <div key={weekIndex} className="flex flex-col gap-1">
+                              {week.contributionDays.map((day: any, dayIndex: number) => {
+                                const contributionLevel =
+                                  day.contributionCount === 0
+                                    ? 0
+                                    : day.contributionCount <= 2
+                                      ? 1
+                                      : day.contributionCount <= 4
+                                        ? 2
+                                        : day.contributionCount <= 6
+                                          ? 3
+                                          : 4;
 
-                          const colors = [
-                            'bg-muted',
-                            'bg-[#65216eff]',
-                            'bg-[#9730a1ff]',
-                            'bg-[#b540c4ff]',
-                            'bg-[#d99be9ff]',
-                          ];
+                                const colors = [
+                                  'bg-muted',
+                                  'bg-[#65216eff]',
+                                  'bg-[#9730a1ff]',
+                                  'bg-[#b540c4ff]',
+                                  'bg-[#d99be9ff]',
+                                ];
 
-                          return (
-                            <motion.div
-                              key={`${day.date}-${index}`}
-                              className={`w-3 h-3 rounded-sm ${colors[contributionLevel]} cursor-pointer`}
-                              initial={{ scale: 0, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ duration: 0.2, delay: index * 0.002 }}
-                              whileHover={{ scale: 1.2 }}
-                              title={`${day.contributionCount} contributions on ${day.date}`}
-                            />
-                          );
-                        })}
+                                return (
+                                  <motion.div
+                                    key={`${day.date}-${weekIndex}-${dayIndex}`}
+                                    className={`w-3 h-3 rounded-sm ${colors[contributionLevel]} cursor-pointer`}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ duration: 0.2, delay: (weekIndex * 7 + dayIndex) * 0.002 }}
+                                    whileHover={{ scale: 1.2 }}
+                                    title={`${day.contributionCount} contributions on ${day.date}`}
+                                  />
+                                );
+                              })}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
