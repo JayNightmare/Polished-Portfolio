@@ -27,25 +27,72 @@ export default function ReadmeModal({ repo, isOpen, onClose }: ReadmeModalProps)
 
   useEffect(() => {
     if (!repo || !isOpen) return;
-    setLoading(true);
-    // Fetch README
-    fetch(`https://api.github.com/repos/${repo.full_name}/readme`, {
-      headers: { Accept: 'application/vnd.github.v3.raw' },
-    })
-      .then((res) => (res.ok ? res.text() : Promise.resolve('No README found.')))
-      .then(setReadme)
-      .catch(() => setReadme('No README found.'));
-    // Fetch languages
-    fetch(`https://api.github.com/repos/${repo.full_name}/languages`)
-      .then((res) => res.json())
-      .then(setLanguages)
-      .catch(() => setLanguages({}));
-    // Fetch contributors
-    fetch(`https://api.github.com/repos/${repo.full_name}/contributors`)
-      .then((res) => res.json())
-      .then((data) => (Array.isArray(data) ? setContributors(data) : setContributors([])))
-      .catch(() => setContributors([]));
-    setLoading(false);
+
+    const fetchRepoData = async () => {
+      setLoading(true);
+
+      // Cache keys for different data types
+      const readmeCacheKey = `github_readme_${repo.full_name}`;
+      const languagesCacheKey = `github_languages_${repo.full_name}`;
+      const contributorsCacheKey = `github_contributors_${repo.full_name}`;
+
+      try {
+        // Check for cached README
+        const cachedReadme = sessionStorage.getItem(readmeCacheKey);
+        if (cachedReadme) {
+          setReadme(cachedReadme);
+        } else {
+          // Fetch README
+          const readmeResponse = await fetch(
+            `https://api.github.com/repos/${repo.full_name}/readme`,
+            {
+              headers: { Accept: 'application/vnd.github.v3.raw' },
+            }
+          );
+          const readmeText = readmeResponse.ok ? await readmeResponse.text() : 'No README found.';
+          setReadme(readmeText);
+          sessionStorage.setItem(readmeCacheKey, readmeText);
+        }
+
+        // Check for cached languages
+        const cachedLanguages = sessionStorage.getItem(languagesCacheKey);
+        if (cachedLanguages) {
+          setLanguages(JSON.parse(cachedLanguages));
+        } else {
+          // Fetch languages
+          const languagesResponse = await fetch(
+            `https://api.github.com/repos/${repo.full_name}/languages`
+          );
+          const languagesData = languagesResponse.ok ? await languagesResponse.json() : {};
+          setLanguages(languagesData);
+          sessionStorage.setItem(languagesCacheKey, JSON.stringify(languagesData));
+        }
+
+        // Check for cached contributors
+        const cachedContributors = sessionStorage.getItem(contributorsCacheKey);
+        if (cachedContributors) {
+          setContributors(JSON.parse(cachedContributors));
+        } else {
+          // Fetch contributors
+          const contributorsResponse = await fetch(
+            `https://api.github.com/repos/${repo.full_name}/contributors`
+          );
+          const contributorsData = contributorsResponse.ok ? await contributorsResponse.json() : [];
+          const validContributors = Array.isArray(contributorsData) ? contributorsData : [];
+          setContributors(validContributors);
+          sessionStorage.setItem(contributorsCacheKey, JSON.stringify(validContributors));
+        }
+      } catch (error) {
+        console.error('Error fetching repository data:', error);
+        setReadme('Error loading README.');
+        setLanguages({});
+        setContributors([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRepoData();
   }, [repo, isOpen]);
 
   // MarkdownIt instance with highlight.js

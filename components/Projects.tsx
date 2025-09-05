@@ -31,7 +31,8 @@ export function Projects() {
   // Get project image (same logic as Projects component)
   const getProjectImage = (repo: any) => {
     // Try to use the social preview image from GitHub
-    const socialPreview = `https://opengraph.githubassets.com/1/${repo.full_name}`;
+    const socialPreview =
+      repo.avatar_url || `https://opengraph.githubassets.com/1/${repo.full_name}`;
 
     const fallbackImages: { [key: string]: string } = {
       react:
@@ -180,25 +181,6 @@ export function Projects() {
                           className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           initial={false}
                         />
-                        <motion.div
-                          className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          initial={false}
-                        >
-                          <Badge
-                            variant="secondary"
-                            className="bg-black/20 text-white border-white/20"
-                          >
-                            <Star className="h-3 w-3 mr-1" />
-                            {repo.stargazers_count}
-                          </Badge>
-                          <Badge
-                            variant="secondary"
-                            className="bg-black/20 text-white border-white/20"
-                          >
-                            <GitFork className="h-3 w-3 mr-1" />
-                            {repo.forks_count}
-                          </Badge>
-                        </motion.div>
                       </motion.div>
 
                       <CardHeader>
@@ -214,7 +196,7 @@ export function Projects() {
                               variant="secondary"
                               className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
                             >
-                              Featured
+                              Organisations
                             </Badge>
                           </motion.div>
                         </div>
@@ -266,7 +248,7 @@ export function Projects() {
                               disabled={!repo.homepage}
                             >
                               <a
-                                href={repo.homepage || '#'}
+                                href={repo.homepage || repo.html_url || '#'}
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
@@ -303,9 +285,6 @@ export function Projects() {
                     </Card>
                   </motion.div>
                 ))}
-
-                {/* Readme Modal for Featured Projects */}
-                <ReadmeModal repo={activeRepo} isOpen={open} onClose={() => setOpen(false)} />
               </div>
             )}
 
@@ -360,19 +339,17 @@ export function Projects() {
                             alt={repo.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           />
-                          <motion.div
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            initial={false}
-                          >
-                            <Badge
-                              variant="secondary"
-                              className="bg-black/40 text-white text-xs border-white/20"
-                            >
-                              <Star className="h-2 w-2 mr-1" />
-                              {repo.stargazers_count}
-                            </Badge>
-                          </motion.div>
                         </motion.div>
+
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <Badge
+                            variant="secondary"
+                            className="bg-black/40 text-white text-xs border-white/20"
+                          >
+                            <Star className="h-2 w-2 mr-1" />
+                            {repo.stargazers_count}
+                          </Badge>
+                        </div>
 
                         <CardHeader className="p-4">
                           <CardTitle className="text-base group-hover:text-primary transition-colors duration-300">
@@ -416,25 +393,23 @@ export function Projects() {
                               whileTap={{ scale: 0.95 }}
                               className=""
                             >
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="flex-1 p-1"
-                                asChild
-                                disabled={!repo.homepage}
-                              >
-                                <a
-                                  href={repo.homepage || '#'}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                              {repo.homepage ? (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="flex-1 p-1"
+                                  asChild
+                                  disabled={!repo.homepage}
                                 >
-                                  {repo.homepage ? (
-                                    <ExternalLink className="h-3 w-3" />
-                                  ) : (
+                                  <a
+                                    href={repo.homepage || '#'}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
                                     <Eye className="h-3 w-3" />
-                                  )}
-                                </a>
-                              </Button>
+                                  </a>
+                                </Button>
+                              ) : null}
                             </motion.div>
 
                             <motion.div

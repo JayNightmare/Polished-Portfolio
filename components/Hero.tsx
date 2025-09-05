@@ -30,6 +30,13 @@ export function Hero() {
     }
   };
 
+  const scrollToAbout = () => {
+    const element = document.getElementById('about');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       id="home"
@@ -86,6 +93,10 @@ export function Hero() {
 
       <div className="container mx-auto px-4 py-20 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
+          <motion.div>
+            <img src="/src/assets/icon.svg" alt="Logo" className="w-[24px] h-[24px] mx-auto mb-4" />
+          </motion.div>
+
           <motion.div
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -110,6 +121,38 @@ export function Hero() {
               </span>
             </Badge>
           </motion.div>
+
+          <motion.h1
+            className="text-4xl md:text-1xl lg:text-1xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <motion.span
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="inline-block"
+            >
+              Jordan
+            </motion.span>{' '}
+            <motion.span
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="inline-block"
+            >
+              Bell
+            </motion.span>{' '}
+            <motion.span
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="inline-block"
+            >
+              Portfolio
+            </motion.span>
+          </motion.h1>
 
           <motion.h1
             className="text-4xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
@@ -202,9 +245,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 1.2 }}
           >
             {[
-              { href: 'https://github.com', icon: Github, label: 'GitHub' },
-              { href: 'https://linkedin.com', icon: Linkedin, label: 'LinkedIn' },
-              { href: 'mailto:contact@example.com', icon: Mail, label: 'Email' },
+              { href: 'https://github.com/JayNightmare', icon: Github, label: 'GitHub' },
+              { href: 'https://linkedin.com/in/jordan-s-bell/', icon: Linkedin, label: 'LinkedIn' },
+              { href: 'mailto:jn3.enquiries@gmail.com', icon: Mail, label: 'Email' },
             ].map((social, index) => (
               <motion.a
                 key={social.label}
@@ -243,7 +286,7 @@ export function Hero() {
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
               className="p-2 rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors duration-300"
-              onClick={scrollToProjects}
+              onClick={scrollToAbout}
             >
               <ArrowDown className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors duration-300" />
             </motion.div>
