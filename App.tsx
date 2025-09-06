@@ -11,9 +11,6 @@ import { Badge } from './components/ui/badge';
 import AllProjects from './components/AllProjects';
 import './styles/globals.css';
 import './styles/github-heatmap.css';
-import CV from './src/assets/Jordan_Bell_CV.pdf';
-
-const cv = CV;
 
 export default function App() {
   return (
