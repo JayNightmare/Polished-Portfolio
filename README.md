@@ -1,4 +1,9 @@
+<div align=center>
+<img src="https://raw.githubusercontent.com/JayNightmare/Polished-Portfolio/356db79a3142fd5ddb0463d63e82e73802596967/src/assets/icon.svg" width=32>
+
 # Polished Portfolio w/ GitHub API
+</div>
+
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a clean design approach with smooth animations and interactive elements.
 
