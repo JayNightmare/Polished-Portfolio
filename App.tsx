@@ -39,7 +39,7 @@ export default function App() {
                 element={<h1 className="text-center mt-20 text-2xl">404 - Page Not Found</h1>}
               />
               <Route
-                path="/cv"
+                path="/Jordan_Bell_CV.pdf"
                 element={
                   <div>
                     <a
