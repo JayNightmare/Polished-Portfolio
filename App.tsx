@@ -44,17 +44,15 @@ export default function App() {
               <Route
                 path="/cv"
                 element={
-                  // Open the PDF in a new tab
                   <div>
                     <a
-                      href={cv}
+                      href="/Jordan_Bell_CV.pdf"
                       download
                       className="absolute top-[70px] right-4 text-white px-4 py-2 rounded-[5px] bg-background hover:bg-accent/80 transition mb-4 z-10 shadow-md"
                     >
                       Download CV
                     </a>
-                    <iframe src={cv} title="CV" className="w-full h-screen" />
-                    // download button
+                    <iframe src="/Jordan_Bell_CV.pdf" title="CV" className="w-full h-screen" />
                   </div>
                 }
               />
