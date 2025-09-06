@@ -7,9 +7,13 @@ import { Projects } from './components/Projects';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { AnimatedBackground } from './components/AnimatedBackground';
+import { Badge } from './components/ui/badge';
 import AllProjects from './components/AllProjects';
 import './styles/globals.css';
 import './styles/github-heatmap.css';
+import CV from './src/assets/Jordan_Bell_CV.pdf';
+
+const cv = CV;
 
 export default function App() {
   return (
@@ -40,8 +44,18 @@ export default function App() {
               <Route
                 path="/cv"
                 element={
-                  window.open('/src/assets/Jordan_Bell_CV.pdf', '_blank', 'noopener,noreferrer') &&
-                  null
+                  // Open the PDF in a new tab
+                  <div>
+                    <a
+                      href={cv}
+                      download
+                      className="absolute top-[70px] right-4 text-white px-4 py-2 rounded-[5px] bg-background hover:bg-accent/80 transition mb-4 z-10 shadow-md"
+                    >
+                      Download CV
+                    </a>
+                    <iframe src={cv} title="CV" className="w-full h-screen" />
+                    // download button
+                  </div>
                 }
               />
             </Routes>
