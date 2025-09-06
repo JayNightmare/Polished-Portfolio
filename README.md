@@ -1,4 +1,4 @@
-# Different Design Portfolio
+# Polished Portfolio w/ GitHub API
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a clean design approach with smooth animations and interactive elements.
 
@@ -13,6 +13,7 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 - **Contact Form**: Interactive contact form with validation
 - **SEO Optimized**: Includes sitemap generation and meta tags
 - **CI/CD Pipeline**: Automated deployment to GitHub Pages
+- **Cached Results**: Caches the responses from the API to reduce calls made
 
 ## 🛠️ Tech Stack
 
@@ -38,20 +39,6 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 - **PostCSS** - CSS processing
 - **Autoprefixer** - CSS vendor prefixing
 
-## 📁 Project Structure
-
-```
-├── components/           # React components
-│   ├── ui/              # Reusable UI components (Radix UI based)
-│   ├── figma/           # Figma-related components
-│   └── hooks/           # Custom React hooks
-├── src/                 # Source files
-├── styles/              # Global styles and CSS
-├── guidelines/          # Project guidelines and documentation
-├── .github/workflows/   # CI/CD pipeline configuration
-└── public/              # Static assets
-```
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -62,34 +49,43 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 ### Installation
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/JayNightmare/Polished-Portfolio.git
-   cd different-design
-   ```
+
+```bash
+git clone https://github.com/JayNightmare/Polished-Portfolio.git
+cd Polished-Portfolio
+```
 
 2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+
+```bash
+npm install
+```
 
 3. **Create environment file**
-   ```bash
-   cp .env.example .env.local
-   ```
-   
-   Add your environment variables:
-   ```env
-   VITE_GITHUB_TOKEN=your_github_token_here
-   VITE_DISCORD_HOOK=your_discord_webhook_url
-   ```
+
+```bash
+cp .env.example .env.local
+```
+
+Add your environment variables:
+```env
+VITE_GITHUB_TOKEN=your_github_token_here
+VITE_DISCORD_HOOK=your_discord_webhook_url
+```
 
 4. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+   
+```bash
+npm run dev
+  ```
 
-5. **Open your browser**
-   Navigate to `http://localhost:5173` to view the application.
+5. **Replace GitHub Username**
+
+Go to the search tab in VSCode and replace "jaynightmare" (not cap sensitive) with your GitHub username.
+
+1. **Open your browser**
+   
+Navigate to `http://localhost:5173` to view the application.
 
 ## 📜 Available Scripts
 
@@ -118,7 +114,7 @@ The project uses Tailwind CSS v4 with custom configuration. Styles are defined i
 
 ## 📱 Components Overview
 
-### Core Components
+### Core Components:
 - **Header** - Navigation and theme toggle
 - **Hero** - Landing section with interactive background
 - **About** - Personal information and introduction
@@ -127,7 +123,13 @@ The project uses Tailwind CSS v4 with custom configuration. Styles are defined i
 - **Contact** - Contact form and social links
 - **Footer** - Site footer with additional links
 
-### UI Components
+### Additional Components:
+- **All Projects** - All the projects in your GitHub (or manually added projects)
+- **GitHub Heatmap** - Heatmap of your contributions on GitHub
+- **Animated Background** - Simple Animation playing in the background
+- **Typing Text** - Types out text entered in the parameter
+
+### UI Components:
 The project includes a comprehensive set of reusable UI components built on Radix UI:
 - Buttons, Cards, Dialogs, Forms
 - Accordion, Tabs, Tooltips
@@ -136,6 +138,8 @@ The project includes a comprehensive set of reusable UI components built on Radi
 
 ## 🚀 Deployment
 
+### Automatic Deployment:
+
 The project includes automated deployment to GitHub Pages:
 
 1. **Push to main branch** triggers the deployment workflow
@@ -143,7 +147,7 @@ The project includes automated deployment to GitHub Pages:
 3. **Build process** runs tests, builds the app, and generates sitemap
 4. **Deployment** happens automatically to GitHub Pages
 
-### Manual Deployment
+### Manual Deployment:
 
 ```bash
 # Build the project
@@ -163,20 +167,12 @@ npm run build
 
 ## ⚠️ Important Notes
 
-### Radix UI Imports
-The Radix imports in the component files originally contained pinned version suffixes (e.g. `@radix-ui/react-slot@1.1.2`). Standard module resolution expects package names without the `@version` suffix. Update them if build errors occur by removing the suffix.
-
 ### Environment Setup
 Make sure to configure your environment variables properly for GitHub integration and contact form functionality to work correctly.
 
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
-
-## 📞 Contact
-
-- **GitHub**: [@JayNightmare](https://github.com/JayNightmare)
-- **Repository**: [Polished-Portfolio](https://github.com/JayNightmare/Polished-Portfolio)
 
 ## 🙏 Acknowledgments
 
