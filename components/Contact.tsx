@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
-import { Check, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Check, Mail, MapPin, FileText, Send } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -82,11 +82,11 @@ export function Contact() {
       action: 'mailto:jn3.enquiries@gmail.com',
     },
     {
-      icon: <Phone className="h-5 w-5" />,
-      title: 'Phone',
-      value: '+44 7851 032740',
-      description: 'Mon-Fri from 9am to 6pm',
-      action: 'tel:+4407851032740',
+      icon: <FileText className="h-5 w-5" />,
+      title: 'CV',
+      value: 'Download CV',
+      description: 'Download my CV',
+      action: '/src/assets/Jordan_Bell_CV.pdf',
     },
     {
       icon: <MapPin className="h-5 w-5" />,
