@@ -110,6 +110,18 @@ Navigate to `http://localhost:5173` to view the application.
 | `VITE_GITHUB_TOKEN` | GitHub personal access token for API calls | Yes |
 | `VITE_DISCORD_HOOK` | Discord webhook URL for contact form | Yes |
 
+### GitHub Token
+1. GitHub -> Settings
+2. Scroll to the bottom -> Developer Settings
+3. Personal Access Token -> Tokens (classic)
+4. Copy Key
+
+### Discord Hook
+1. Make a server on Discord (or use a pre-existing one)
+2. Edit a text channel
+3. Integrations -> Webhooks
+4. Create a webhook -> copy url
+
 ### Tailwind CSS
 
 The project uses Tailwind CSS v4 with custom configuration. Styles are defined in:
