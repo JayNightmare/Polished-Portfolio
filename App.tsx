@@ -33,6 +33,17 @@ export default function App() {
                 }
               />
               <Route path="/all-projects" element={<AllProjects />} />
+              <Route
+                path="*"
+                element={<h1 className="text-center mt-20 text-2xl">404 - Page Not Found</h1>}
+              />
+              <Route
+                path="/cv"
+                element={
+                  window.open('/src/assets/Jordan_Bell_CV.pdf', '_blank', 'noopener,noreferrer') &&
+                  null
+                }
+              />
             </Routes>
           </main>
           <Footer />

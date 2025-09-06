@@ -86,7 +86,7 @@ export function Contact() {
       title: 'CV',
       value: 'Download CV',
       description: 'Download my CV',
-      action: '/src/assets/Jordan_Bell_CV.pdf',
+      action: '/cv',
     },
     {
       icon: <MapPin className="h-5 w-5" />,
