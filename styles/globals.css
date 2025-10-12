@@ -195,3 +195,23 @@ html {
 .background-readme {
   background-color: #030213;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #4d4d4d;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a7a7a7;
+}

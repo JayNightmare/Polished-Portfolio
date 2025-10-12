@@ -50,10 +50,12 @@ export function Header() {
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (!element) return;
+
     setIsMobileMenuOpen(false);
+    requestAnimationFrame(() => {
+      element.scrollIntoView({ behavior: 'smooth' });
+    });
   };
 
   const navItems = [
@@ -91,7 +93,7 @@ export function Header() {
         </motion.div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1 bg-muted/50 rounded-full p-1">
+        <nav className="hidden sm:flex items-center space-x-1 bg-muted/50 rounded-full p-1">
           {navItems.map((item, index) => (
             <motion.button
               key={item.id}

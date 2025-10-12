@@ -1,6 +1,6 @@
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Github, Linkedin, Mail, Download, ArrowDown, Sparkles } from 'lucide-react';
+import { Github, Linkedin, Mail, Download, ArrowDown, Sparkles, ScrollText } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import Logo from '../src/assets/icon.svg';
@@ -146,14 +146,6 @@ export function Hero() {
               className="inline-block"
             >
               Bell
-            </motion.span>{' '}
-            <motion.span
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="inline-block"
-            >
-              Portfolio
             </motion.span>
           </motion.h1>
 
@@ -187,9 +179,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            I craft exceptional digital experiences through clean code, innovative solutions, and
-            user-centered design. Passionate about building scalable web applications that make a
-            difference.
+            BSc (Hons) Computer Science | Active Open Source Developer
           </motion.p>
 
           <motion.div
@@ -206,7 +196,7 @@ export function Hero() {
               <Button
                 onClick={scrollToProjects}
                 size="lg"
-                className="w-full sm:w-auto group relative overflow-hidden"
+                className="w-full sm:w-auto group relative overflow-hidden cursor-pointer"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
@@ -227,7 +217,7 @@ export function Hero() {
                 onClick={scrollToContact}
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto group"
+                className="w-full sm:w-auto group cursor-pointer"
               >
                 <span>Get In Touch</span>
                 <motion.div
@@ -251,6 +241,7 @@ export function Hero() {
               { href: 'https://github.com/JayNightmare', icon: Github, label: 'GitHub' },
               { href: 'https://linkedin.com/in/jordan-s-bell/', icon: Linkedin, label: 'LinkedIn' },
               { href: 'mailto:jn3.enquiries@gmail.com', icon: Mail, label: 'Email' },
+              { href: '/Jordan_Bell_CV.pdf', icon: ScrollText, label: 'Resume' },
             ].map((social, index) => (
               <motion.a
                 key={social.label}

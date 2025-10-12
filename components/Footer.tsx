@@ -1,6 +1,6 @@
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
-import { Github, Linkedin, Mail, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, ScrollText } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,6 +20,11 @@ export function Footer() {
       name: 'Email',
       icon: <Mail className="h-4 w-4" />,
       url: 'mailto:jn3.enquiries@gmail.com',
+    },
+    {
+      name: 'Resumé',
+      icon: <ScrollText className="h-4 w-4" />,
+      url: '/Jordan_Bell_CV.pdf',
     },
   ];
 
