@@ -4,7 +4,6 @@
 # Polished Portfolio w/ GitHub API
 </div>
 
-
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a clean design approach with smooth animations and interactive elements.
 
 ## 🚀 Features
