@@ -3,7 +3,7 @@ import { Badge } from './ui/badge';
 import { Github, Linkedin, Mail, Download, ArrowDown, Sparkles, ScrollText } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
-import Logo from '../src/assets/icon.svg';
+import Logo from '../assets/icon.svg';
 
 const logo = Logo;
 

@@ -3,7 +3,7 @@ import { PopUp, PopUpContent, PopUpHeader, PopUpTitle, PopUpDescription } from '
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-import { Skeleton } from './ui/skeleton';
+// import { Skeleton } from './ui/skeleton';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
 

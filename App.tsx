@@ -7,7 +7,7 @@ import { Projects } from './src/components/Projects';
 import { Contact } from './src/components/Contact';
 import { Footer } from './src/components/Footer';
 import { AnimatedBackground } from './src/components/AnimatedBackground';
-import { Badge } from './src/components/ui/badge';
+// import { Badge } from './src/components/ui/badge';
 import AllProjects from './src/components/AllProjects';
 import './src/styles/globals.css';
 import './src/styles/github-heatmap.css';

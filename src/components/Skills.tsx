@@ -1,6 +1,6 @@
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Progress } from './ui/progress';
+// import { Progress } from './ui/progress';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { Zap, Code, Database, Wrench, Users, TrendingUp } from 'lucide-react';
