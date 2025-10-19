@@ -4,7 +4,7 @@ export default {
   content: [
     './index.html',
     './App.tsx',
-    './components/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
     './src/main.tsx',
     './**/*.{js,ts,jsx,tsx}', // Include all files in the codebase
   ],

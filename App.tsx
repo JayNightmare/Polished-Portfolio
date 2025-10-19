@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { About } from './components/About';
-import { Skills } from './components/Skills';
-import { Projects } from './components/Projects';
-import { Contact } from './components/Contact';
-import { Footer } from './components/Footer';
-import { AnimatedBackground } from './components/AnimatedBackground';
-import { Badge } from './components/ui/badge';
-import AllProjects from './components/AllProjects';
-import './styles/globals.css';
-import './styles/github-heatmap.css';
+import { Header } from './src/components/Header';
+import { Hero } from './src/components/Hero';
+import { About } from './src/components/About';
+import { Skills } from './src/components/Skills';
+import { Projects } from './src/components/Projects';
+import { Contact } from './src/components/Contact';
+import { Footer } from './src/components/Footer';
+import { AnimatedBackground } from './src/components/AnimatedBackground';
+import { Badge } from './src/components/ui/badge';
+import AllProjects from './src/components/AllProjects';
+import './src/styles/globals.css';
+import './src/styles/github-heatmap.css';
 
 export default function App() {
   return (
