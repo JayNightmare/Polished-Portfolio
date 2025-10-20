@@ -51,7 +51,10 @@ interface UseGitHubReturn {
   error: string | null;
 }
 
-export function useGitHub({ username, featuredRepos = [] }: UseGitHubProps): UseGitHubReturn {
+export function useGitHub(
+  { username, featuredRepos = [] }: UseGitHubProps,
+  options?: { enabled?: boolean }
+): UseGitHubReturn {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [featuredReposState, setFeaturedReposState] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -166,8 +169,12 @@ export function useGitHub({ username, featuredRepos = [] }: UseGitHubProps): Use
       }
     };
 
-    fetchRepos();
-  }, [username]);
+    if (options?.enabled ?? true) {
+      fetchRepos();
+    } else {
+      setLoading(false);
+    }
+  }, [username, options?.enabled]);
 
   return {
     repos,

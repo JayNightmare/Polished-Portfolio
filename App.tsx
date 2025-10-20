@@ -8,7 +8,8 @@ import { Contact } from './src/components/Contact';
 import { Footer } from './src/components/Footer';
 import { AnimatedBackground } from './src/components/AnimatedBackground';
 // import { Badge } from './src/components/ui/badge';
-import AllProjects from './src/components/AllProjects';
+import { Suspense, lazy } from 'react';
+const AllProjects = lazy(() => import('./src/components/AllProjects'));
 import './src/styles/globals.css';
 import './src/styles/github-heatmap.css';
 
@@ -33,7 +34,14 @@ export default function App() {
                   </>
                 }
               />
-              <Route path="/all-projects" element={<AllProjects />} />
+              <Route
+                path="/all-projects"
+                element={
+                  <Suspense fallback={<div className="text-center mt-20">Loading...</div>}>
+                    <AllProjects />
+                  </Suspense>
+                }
+              />
               <Route
                 path="*"
                 element={<h1 className="text-center mt-20 text-2xl">404 - Page Not Found</h1>}

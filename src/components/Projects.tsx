@@ -1,6 +1,6 @@
 import { Badge } from './ui/badge';
-import ReadmeModal from './ReadmeModal';
-import { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
+const ReadmeModal = lazy(() => import('./ReadmeModal'));
 // import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import MarkdownIt from 'markdown-it';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
@@ -11,11 +11,16 @@ import { motion } from 'motion/react';
 import { useGitHub } from './hooks/useGitHub';
 import { Skeleton } from './ui/skeleton';
 import { Link } from 'react-router-dom';
+import { useInViewport } from './hooks/useInViewport';
 
 export function Projects() {
-  const { repos, featuredRepos, loading, error } = useGitHub({
-    username: 'JayNightmare',
-  });
+  const { ref: sectionRef, isInView } = useInViewport<HTMLDivElement>({ rootMargin: '300px 0px' });
+  const { repos, featuredRepos, loading, error } = useGitHub(
+    {
+      username: 'JayNightmare',
+    },
+    { enabled: isInView }
+  );
 
   // Modal state for README popup
   const [open, setOpen] = useState(false);
@@ -85,7 +90,7 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="py-20 bg-muted/30 relative overflow-hidden">
+    <section id="projects" ref={sectionRef} className="py-20 bg-muted/30 relative overflow-hidden">
       {/* Animated background elements */}
       <motion.div
         className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-r from-primary/10 to-transparent rounded-full blur-3xl"
@@ -405,8 +410,10 @@ export function Projects() {
                                     href={repo.homepage || '#'}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    aria-label={`Preview ${repo.name}`}
                                   >
                                     <Eye className="h-3 w-3" />
+                                    <span className="sr-only">Preview {repo.name}</span>
                                   </a>
                                 </Button>
                               ) : null}
@@ -434,8 +441,10 @@ export function Projects() {
                       </Card>
                     </motion.div>
                   ))}
-                {/* Readme Modal for Other Projects */}
-                <ReadmeModal repo={activeRepo} isOpen={open} onClose={() => setOpen(false)} />
+                {/* Readme Modal for Other Projects (lazy) */}
+                <Suspense fallback={null}>
+                  <ReadmeModal repo={activeRepo} isOpen={open} onClose={() => setOpen(false)} />
+                </Suspense>
               </div>
             )}
           </div>

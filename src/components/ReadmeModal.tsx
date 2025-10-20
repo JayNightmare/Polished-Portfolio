@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PopUp, PopUpContent, PopUpHeader, PopUpTitle, PopUpDescription } from './ui/popup';
 import MarkdownIt from 'markdown-it';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
+// highlight.js will be loaded lazily when the modal opens
 // import { Skeleton } from './ui/skeleton';
 import { Badge } from './ui/badge';
 import { Card } from './ui/card';
@@ -24,6 +23,27 @@ export default function ReadmeModal({ repo, isOpen, onClose }: ReadmeModalProps)
   const [loading, setLoading] = useState(false);
   const [languages, setLanguages] = useState<Record<string, number>>({});
   const [contributors, setContributors] = useState<Contributor[]>([]);
+  const [hljs, setHljs] = useState<any>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (isOpen) {
+      (async () => {
+        try {
+          const [{ default: lib }] = await Promise.all([
+            import('highlight.js'),
+            import('highlight.js/styles/github.css'),
+          ]);
+          if (!cancelled) setHljs(lib);
+        } catch (e) {
+          // ignore highlighting failures
+        }
+      })();
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!repo || !isOpen) return;
@@ -108,7 +128,7 @@ export default function ReadmeModal({ repo, isOpen, onClose }: ReadmeModalProps)
     linkify: true,
     typographer: true,
     highlight: function (str, lang) {
-      if (lang && hljs.getLanguage(lang)) {
+      if (hljs && lang && hljs.getLanguage && hljs.getLanguage(lang)) {
         try {
           return hljs.highlight(str, { language: lang }).value;
         } catch (__) {}

@@ -1,13 +1,20 @@
 import { Badge } from './ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card';
 // import { Progress } from './ui/progress';
 import { motion } from 'motion/react';
-import { useState } from 'react';
-import { Zap, Code, Database, Wrench, Users, TrendingUp } from 'lucide-react';
-import { GitHubHeatmap } from './GitHubHeatmap';
+import React, { useState, lazy, Suspense } from 'react';
+import { Zap, Code, Database, Wrench, Users, TrendingUp, Calendar, Award } from 'lucide-react';
+import { useInViewport } from './hooks/useInViewport';
+const GitHubHeatmap = lazy(() =>
+  import('./GitHubHeatmap').then((m) => ({ default: m.GitHubHeatmap }))
+);
 
 export function Skills() {
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const { ref: heatmapRef, isInView: heatmapVisible } = useInViewport<HTMLDivElement>({
+    rootMargin: '200px 0px',
+  });
 
   const skillCategories = [
     {
@@ -15,16 +22,16 @@ export function Skills() {
       icon: <Code className="h-5 w-5" />,
       color: 'from-blue-500 to-purple-600',
       skills: [
-        { name: 'React', level: 45, rank: 'Beginner', year: '' },
-        { name: 'TypeScript', level: 90, rank: 'Learning', year: '' },
-        { name: 'JavaScript', level: 96, rank: 'Intermediate', year: '' },
-        { name: 'Tailwind CSS', level: 64, rank: 'Proficient', year: '' },
-        { name: 'HTML5', level: 80, rank: 'Proficient', year: '' },
-        { name: 'CSS3', level: 85, rank: 'Proficient', year: '' },
-        { name: 'Vue.js', level: 35, rank: 'Learning', year: '' },
-        { name: 'Next.js', level: 28, rank: 'Learning', year: '' },
-        { name: 'Sass', level: 25, rank: 'Learning', year: '' },
-        { name: 'Vite', level: 52, rank: 'Learning', year: '' },
+        { name: 'React', level: 45, rank: 'Beginner', year: '2' },
+        { name: 'TypeScript', level: 90, rank: 'Learning', year: '1' },
+        { name: 'JavaScript', level: 96, rank: 'Intermediate', year: '3' },
+        { name: 'Tailwind CSS', level: 64, rank: 'Proficient', year: '1' },
+        { name: 'HTML5', level: 80, rank: 'Proficient', year: '4' },
+        { name: 'CSS3', level: 85, rank: 'Proficient', year: '4' },
+        { name: 'Vue.js', level: 35, rank: 'Learning', year: '0' },
+        { name: 'Next.js', level: 28, rank: 'Learning', year: '0' },
+        { name: 'Sass', level: 25, rank: 'Learning', year: '1' },
+        { name: 'Vite', level: 12, rank: 'Learning', year: '0' },
       ],
     },
     {
@@ -32,17 +39,15 @@ export function Skills() {
       icon: <Database className="h-5 w-5" />,
       color: 'from-green-500 to-teal-600',
       skills: [
-        { name: 'Node.js', level: 92, rank: '', year: '' },
-        { name: 'Express', level: 90, rank: '', year: '' },
-        { name: 'Python', level: 85, rank: '', year: '' },
-        { name: 'Django', level: 78, rank: '', year: '' },
-        { name: 'PostgreSQL', level: 88, rank: '', year: '' },
-        { name: 'MongoDB', level: 85, rank: '', year: '' },
-        { name: 'Redis', level: 75, rank: '', year: '' },
-        { name: 'REST APIs', level: 94, rank: '', year: '' },
-        { name: 'GraphQL', level: 82, rank: '', year: '' },
-        { name: 'Prisma', level: 86, rank: '', year: '' },
-        { name: 'Supabase', level: 88, rank: '', year: '' },
+        { name: 'Node.js', level: 92, rank: 'Intermediate', year: '3' },
+        { name: 'Express', level: 90, rank: 'Proficient', year: '1' },
+        { name: 'Python', level: 85, rank: 'Learning', year: '1' },
+        { name: 'Django', level: 78, rank: 'Learning', year: '0' },
+        { name: 'PostgreSQL', level: 88, rank: 'Learning', year: '0' },
+        { name: 'MongoDB', level: 85, rank: 'Intermediate', year: '3' },
+        { name: 'REST APIs', level: 44, rank: 'Intermediate', year: '1' },
+        { name: 'GraphQL', level: 22, rank: 'Learning', year: '1' },
+        { name: 'Supabase', level: 38, rank: 'Learning', year: '0' },
       ],
     },
     {
@@ -50,17 +55,16 @@ export function Skills() {
       icon: <Wrench className="h-5 w-5" />,
       color: 'from-orange-500 to-red-600',
       skills: [
-        { name: 'Git', level: 95, rank: '', year: '' },
-        { name: 'Docker', level: 82, rank: '', year: '' },
-        { name: 'AWS', level: 78, rank: '', year: '' },
-        { name: 'Vercel', level: 90, rank: '', year: '' },
-        { name: 'GitHub Actions', level: 85, rank: '', year: '' },
-        { name: 'Jest', level: 88, rank: '', year: '' },
-        { name: 'Cypress', level: 80, rank: '', year: '' },
-        { name: 'ESLint', level: 92, rank: '', year: '' },
-        { name: 'Prettier', level: 90, rank: '', year: '' },
-        { name: 'Figma', level: 86, rank: '', year: '' },
-        { name: 'VS Code', level: 96, rank: '', year: '' },
+        { name: 'Git', level: 95, rank: 'Intermediate', year: '5' },
+        { name: 'Docker', level: 82, rank: 'Learning', year: '1' },
+        { name: 'AWS', level: 78, rank: 'Learning', year: '1' },
+        { name: 'Vercel', level: 90, rank: 'Learning', year: '1' },
+        { name: 'GitHub Actions', level: 85, rank: 'Proficient', year: '2' },
+        { name: 'Jest', level: 88, rank: 'Learning', year: '1' },
+        { name: 'ESLint', level: 92, rank: 'Proficient', year: '1' },
+        { name: 'Prettier', level: 90, rank: 'Intermediate', year: '2' },
+        { name: 'Figma', level: 86, rank: 'Advanced', year: '4' },
+        { name: 'VSCode', level: 96, rank: 'advanced', year: '4' },
       ],
     },
     {
@@ -68,13 +72,13 @@ export function Skills() {
       icon: <Users className="h-5 w-5" />,
       color: 'from-pink-500 to-rose-600',
       skills: [
-        { name: 'Problem Solving', level: 95, rank: '', year: '' },
-        { name: 'Team Collaboration', level: 92, rank: '', year: '' },
-        { name: 'Project Management', level: 88, rank: '', year: '' },
-        { name: 'Agile/Scrum', level: 90, rank: '', year: '' },
-        { name: 'Code Review', level: 94, rank: '', year: '' },
-        { name: 'Mentoring', level: 85, rank: '', year: '' },
-        { name: 'Communication', level: 90, rank: '', year: '' },
+        { name: 'Problem Solving', level: 75, rank: 'Out-Of-The-Box Thinking', year: '0' },
+        { name: 'Team Collaboration', level: 92, rank: 'Leadership Training', year: '2' },
+        { name: 'Project Management', level: 88, rank: 'Task Management', year: '2' },
+        { name: 'Agile/Scrum', level: 90, rank: 'Intermediate', year: '2' },
+        { name: 'Code Review', level: 94, rank: 'Proficient', year: '2' },
+        { name: 'Mentoring', level: 85, rank: 'Proficient', year: '1' },
+        { name: 'Communication', level: 90, rank: 'Team Player', year: '0' },
       ],
     },
   ];
@@ -101,13 +105,13 @@ export function Skills() {
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.2 }}
             viewport={{ once: true }}
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.2 }}
               viewport={{ once: true }}
             >
               <Badge variant="outline" className="mb-4">
@@ -128,7 +132,7 @@ export function Skills() {
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                transition={{ duration: 0.2 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -5 }}
                 className="h-full"
@@ -148,85 +152,102 @@ export function Skills() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {category.skills.slice(0, 6).map((skill, skillIndex) => (
-                        <motion.div
-                          key={skillIndex}
-                          className="group/skill"
-                          onMouseEnter={() => setHoveredSkill(skill.name)}
-                          onMouseLeave={() => setHoveredSkill(null)}
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.4, delay: skillIndex * 0.05 }}
-                          viewport={{ once: true }}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm group-hover/skill:text-primary transition-colors duration-200">
-                              {skill.name}
-                            </span>
-                            <motion.span
-                              className="text-xs text-muted-foreground"
-                              initial={{ opacity: 0 }}
-                              animate={{
-                                opacity: hoveredSkill === skill.name ? 1 : 0,
-                              }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              {skill.level}%
-                            </motion.span>
-                          </div>
-                          <div className="relative">
-                            <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                      {[...category.skills]
+                        .sort(
+                          (a, b) =>
+                            (parseInt(b.year || '0', 10) || 0) - (parseInt(a.year || '0', 10) || 0)
+                        )
+                        .map((skill, skillIndex) => (
+                          <HoverCard key={skillIndex} openDelay={200}>
+                            <HoverCardTrigger asChild>
                               <motion.div
-                                className={`h-full bg-gradient-to-r ${category.color} rounded-full`}
-                                initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
-                                transition={{
-                                  duration: 1,
-                                  delay: skillIndex * 0.1,
-                                  ease: 'easeOut',
-                                }}
+                                className="group/skill cursor-pointer"
+                                onMouseEnter={() => setHoveredSkill(skill.name)}
+                                onMouseLeave={() => setHoveredSkill(null)}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.4 }}
                                 viewport={{ once: true }}
-                              />
-                            </div>
-                            <motion.div
-                              className={`absolute top-0 left-0 h-1.5 bg-gradient-to-r ${category.color} rounded-full opacity-0 group-hover/skill:opacity-60`}
-                              style={{ width: `${skill.level}%` }}
-                              animate={{
-                                opacity: hoveredSkill === skill.name ? [0.6, 1, 0.6] : 0,
-                              }}
-                              transition={{ duration: 1, repeat: Infinity }}
-                            />
-                          </div>
-                        </motion.div>
-                      ))}
-
-                      {category.skills.length > 6 && (
-                        <motion.div
-                          className="flex flex-wrap gap-1 pt-2"
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          transition={{ duration: 0.4, delay: 0.6 }}
-                          viewport={{ once: true }}
-                        >
-                          {category.skills.slice(6).map((skill, skillIndex) => (
-                            <motion.div
-                              key={skillIndex}
-                              whileHover={{ scale: 1.05 }}
-                              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                            >
-                              <Badge
-                                variant="outline"
-                                className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors duration-200"
                               >
-                                {skill.name}
-                              </Badge>
-                            </motion.div>
-                          ))}
-                        </motion.div>
-                      )}
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-sm group-hover/skill:text-primary transition-colors duration-200">
+                                    {skill.name}
+                                  </span>
+                                  <motion.span
+                                    className="text-xs text-muted-foreground"
+                                    initial={{ opacity: 0 }}
+                                    animate={{
+                                      opacity: hoveredSkill === skill.name ? 1 : 0,
+                                    }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    {skill.level}%
+                                  </motion.span>
+                                </div>
+                                <div className="relative">
+                                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                                    <motion.div
+                                      className={`h-full bg-gradient-to-r ${category.color} rounded-full`}
+                                      initial={{ width: 0 }}
+                                      whileInView={{ width: `${skill.level}%` }}
+                                      transition={{
+                                        duration: 1,
+                                        delay: skillIndex * 0.1,
+                                        ease: 'easeOut',
+                                      }}
+                                      viewport={{ once: true }}
+                                    />
+                                  </div>
+                                  <motion.div
+                                    className={`absolute top-0 left-0 h-1.5 bg-gradient-to-r ${category.color} rounded-full opacity-0 group-hover/skill:opacity-60`}
+                                    style={{ width: `${skill.level}%` }}
+                                    animate={{
+                                      opacity: hoveredSkill === skill.name ? [0.6, 1, 0.6] : 0,
+                                    }}
+                                    transition={{ duration: 1, repeat: Infinity }}
+                                  />
+                                </div>
+                              </motion.div>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-64" side="top" align="start">
+                              <div className="space-y-2">
+                                <h4 className="text-sm font-semibold flex items-center gap-2">
+                                  <div
+                                    className={`p-1.5 rounded-md bg-gradient-to-r ${category.color} text-white`}
+                                  >
+                                    {category.icon}
+                                  </div>
+                                  {skill.name}
+                                </h4>
+                                <div className="space-y-1.5 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-2">
+                                    <Award className="h-4 w-4" />
+                                    <span>
+                                      Proficiency: <strong>{skill.rank}</strong>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <Calendar className="h-4 w-4" />
+                                    <span>
+                                      Experience:{' '}
+                                      <strong>
+                                        {skill.year === '0' ? 'Less than 1' : skill.year} year
+                                        {skill.year !== '1' ? 's' : ''}
+                                      </strong>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </HoverCardContent>
+                          </HoverCard>
+                        ))}
                     </div>
                   </CardContent>
                 </Card>
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Years Experience:{' '}
+                  {category.skills.reduce((acc, skill) => Math.max(acc, parseInt(skill.year)), 0)}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -269,7 +290,7 @@ export function Skills() {
                       key={tech}
                       initial={{ opacity: 0, scale: 0.8 }}
                       whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                      transition={{ duration: 0.4 }}
                       whileHover={{ scale: 1.1, y: -2 }}
                       viewport={{ once: true }}
                     >
@@ -287,9 +308,13 @@ export function Skills() {
           </motion.div>
 
           {/* GitHub Heatmap Section */}
-          <div className="mt-16 mb-8">
-            {/* Replace 'JayNightmare' with your GitHub username if needed */}
-            <GitHubHeatmap username="JayNightmare" />
+          <div ref={heatmapRef} className="mt-16 mb-8 min-h-48">
+            {heatmapVisible && (
+              <Suspense fallback={null}>
+                {/* Replace 'JayNightmare' with your GitHub username if needed */}
+                <GitHubHeatmap username="JayNightmare" />
+              </Suspense>
+            )}
           </div>
         </div>
       </div>
