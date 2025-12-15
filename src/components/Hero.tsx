@@ -179,7 +179,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            BSc (Hons) Computer Science | Active Open Source Developer
+            MSc in Artificial Intelligence | Open Source Developer
           </motion.p>
 
           <motion.div
