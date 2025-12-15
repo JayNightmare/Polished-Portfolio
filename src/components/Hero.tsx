@@ -220,13 +220,6 @@ export function Hero() {
                 className="w-full sm:w-auto group cursor-pointer"
               >
                 <span>Get In Touch</span>
-                <motion.div
-                  className="ml-2"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <ArrowDown className="h-4 w-4 rotate-45" />
-                </motion.div>
               </Button>
             </motion.div>
           </motion.div>
