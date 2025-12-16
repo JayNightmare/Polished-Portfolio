@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Moon, Sun, Menu, X, Code } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import TypingText from './TypingText';
+// import TypingText from './TypingText';
 
 export function Header() {
   const [isDark, setIsDark] = useState(false);
@@ -87,9 +87,9 @@ export function Header() {
           >
             <Code className="h-4 w-4 text-primary" />
           </motion.div>
-          <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            <TypingText text="<Portfolio />" />
-          </span>
+          {/* <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <TypingText text="" />
+          </span> */}
         </motion.div>
 
         {/* Desktop Navigation */}

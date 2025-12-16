@@ -6,23 +6,27 @@ export function About() {
   const highlights = [
     {
       icon: <Code className="h-6 w-6" />,
-      title: 'Clean Code',
-      description: 'Writing maintainable, scalable, and well-documented code',
+      title: 'Open Source Enthusiast',
+      description:
+        'Contributing to and maintaining open source projects in a variety of languages and backgrounds',
     },
     {
       icon: <Users className="h-6 w-6" />,
       title: 'Team Player',
-      description: 'Collaborating effectively in agile environments',
+      description:
+        'Collaborating effectively in agile environments with clear communication and code reviews',
     },
     {
       icon: <Zap className="h-6 w-6" />,
       title: 'Fast Learner',
-      description: 'Quickly adapting to new technologies and frameworks',
+      description:
+        'Quickly adapting to new technologies and frameworks through reverse engineering, hands on practice, and reading documentation',
     },
     {
       icon: <Award className="h-6 w-6" />,
       title: 'Quality Focus',
-      description: 'Delivering high-quality solutions that exceed expectations',
+      description:
+        'Delivering high-quality software that meets user needs. Writing maintainable, scalable, and well-documented code',
     },
   ];
 
