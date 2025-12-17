@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <script type="text/javascript">
+      // spa-github-pages 404 redirector
+      // If you're on a custom domain at the root, set this to 0.
+      var segmentCount = 0;
+
+      var l = window.location;
+      var path = l.pathname
+        .split('/')
+        .slice(1 + segmentCount)
+        .join('/');
+
+      l.replace(
+        l.protocol +
+          '//' +
+          l.host +
+          '/' +
+          '?/' +
+          path +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
