@@ -1,9 +1,12 @@
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { Github, Linkedin, Mail, Heart, ScrollText } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const socialLinks = [
     {
@@ -36,7 +39,14 @@ export function Footer() {
   ];
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId.replace('#', ''));
+    const id = sectionId.replace('#', '');
+
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+      return;
+    }
+
+    const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }

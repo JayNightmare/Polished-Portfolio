@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Moon, Sun, Menu, X, Code } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-// import TypingText from './TypingText';
 
 export function Header() {
   const [isDark, setIsDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -19,6 +21,15 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    if (location.pathname !== '/') {
+      if (location.pathname.startsWith('/blog')) {
+        setActiveSection('blog');
+      } else {
+        setActiveSection('');
+      }
+      return;
+    }
+
     const handleScroll = () => {
       const sections = ['home', 'about', 'skills', 'projects', 'contact'];
       const scrollPosition = window.scrollY + 100;
@@ -38,8 +49,21 @@ export function Header() {
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname === '/' && location.state && (location.state as any).scrollTo) {
+      const sectionId = (location.state as any).scrollTo;
+      const element = document.getElementById(sectionId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   const toggleTheme = () => {
     const newTheme = !isDark;
@@ -49,10 +73,16 @@ export function Header() {
   };
 
   const scrollToSection = (sectionId: string) => {
+    setIsMobileMenuOpen(false);
+
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: sectionId } });
+      return;
+    }
+
     const element = document.getElementById(sectionId);
     if (!element) return;
 
-    setIsMobileMenuOpen(false);
     requestAnimationFrame(() => {
       element.scrollIntoView({ behavior: 'smooth' });
     });
@@ -63,6 +93,7 @@ export function Header() {
     { label: 'About', id: 'about' },
     { label: 'Skills', id: 'skills' },
     { label: 'Projects', id: 'projects' },
+    { label: 'Blog', id: 'blog', isRoute: true },
     { label: 'Contact', id: 'contact' },
   ];
 
@@ -94,29 +125,40 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden sm:flex items-center space-x-1 bg-muted/50 rounded-full p-1">
-          {navItems.map((item, index) => (
-            <motion.button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className={`relative px-4 py-2 rounded-full transition-colors duration-300 ${
-                activeSection === item.id ? 'text-primary-foreground' : 'hover:text-primary'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-            >
-              {activeSection === item.id && (
-                <motion.div
-                  className="absolute inset-0 bg-primary rounded-full"
-                  layoutId="activeTab"
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">{item.label}</span>
-            </motion.button>
-          ))}
+          {navItems.map((item, index) => {
+            const isRouteItem = 'isRoute' in item && item.isRoute;
+            const navElement = (
+              <motion.div
+                className={`relative px-4 py-2 rounded-full transition-colors duration-300 cursor-pointer ${
+                  activeSection === item.id ? 'text-primary-foreground' : 'hover:text-primary'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                {activeSection === item.id && (
+                  <motion.div
+                    className="absolute inset-0 bg-primary rounded-full"
+                    layoutId="activeTab"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
+              </motion.div>
+            );
+
+            return isRouteItem ? (
+              <Link key={item.id} to={`/${item.id}`}>
+                {navElement}
+              </Link>
+            ) : (
+              <div key={item.id} onClick={() => scrollToSection(item.id)}>
+                {navElement}
+              </div>
+            );
+          })}
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -202,24 +244,33 @@ export function Header() {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
             <nav className="container mx-auto px-4 py-4 space-y-2">
-              {navItems.map((item, index) => (
-                <motion.button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left p-3 rounded-lg transition-colors ${
-                    activeSection === item.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-accent hover:text-primary'
-                  }`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  whileHover={{ x: 5 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  {item.label}
-                </motion.button>
-              ))}
+              {navItems.map((item, index) => {
+                const isRouteItem = 'isRoute' in item && item.isRoute;
+                const navElement = (
+                  <motion.div
+                    className={`block w-full text-left p-3 rounded-lg transition-colors ${
+                      activeSection === item.id
+                        ? 'bg-primary text-primary-foreground'
+                        : 'hover:bg-accent hover:text-primary'
+                    }`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    {item.label}
+                  </motion.div>
+                );
+
+                return isRouteItem ? (
+                  <Link key={item.id} to={`/${item.id}`} onClick={() => setIsMobileMenuOpen(false)}>
+                    {navElement}
+                  </Link>
+                ) : (
+                  <div key={item.id} onClick={() => scrollToSection(item.id)}>
+                    {navElement}
+                  </div>
+                );
+              })}
             </nav>
           </motion.div>
         )}
