@@ -213,7 +213,7 @@ html {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #a7a7a7;
+  background: #a7a7a7
 }
 
 /* Reduced motion */
