@@ -104,7 +104,7 @@ export function BlogPost() {
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-2xl font-bold mb-4">Post not found</h1>
           <Link to="/blog">
-            <Button>Back to Blog</Button>
+            <Button className="cursor-pointer">Back to Blog</Button>
           </Link>
         </div>
       </section>
@@ -117,7 +117,7 @@ export function BlogPost() {
         {/* Back Button */}
         <div className="mb-6">
           <Link to="/blog">
-            <Button variant="ghost" className="gap-2">
+            <Button variant="ghost" className="gap-2 cursor-pointer">
               <ArrowLeft className="h-4 w-4" />
               Back to All Posts
             </Button>
@@ -133,13 +133,17 @@ export function BlogPost() {
                 {isAdmin && (
                   <div className="flex items-center gap-2">
                     <Link to={`/blog/edit/${post.id}`}>
-                      <Button variant="secondary" size="icon" className="h-10 w-10">
+                      <Button variant="secondary" size="icon" className="h-10 w-10 cursor-pointer">
                         <Pencil className="h-4 w-4" />
                       </Button>
                     </Link>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="icon" className="h-10 w-10">
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="h-10 w-10 cursor-pointer"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </AlertDialogTrigger>
@@ -212,7 +216,7 @@ export function BlogPost() {
                 <h2 className="text-2xl font-semibold mb-4">Videos</h2>
                 <div className="grid grid-cols-1 gap-4">
                   {post.videos.map((video, index) => (
-                    <div key={index} className="rounded-lg overflow-hidden">
+                    <div key={index} className="rounded-lg overflow-hidden cursor-pointer">
                       <video src={video} controls className="w-full" />
                     </div>
                   ))}

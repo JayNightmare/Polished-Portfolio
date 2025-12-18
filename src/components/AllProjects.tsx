@@ -136,7 +136,7 @@ export default function AllProjects() {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <Button variant="outline" asChild className="mb-4">
+            <Button variant="outline" asChild className="mb-4 cursor-pointer">
               <Link to="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Home
@@ -154,7 +154,7 @@ export default function AllProjects() {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <Button variant="outline" asChild className="mb-4">
+            <Button variant="outline" asChild className="mb-4 cursor-pointer">
               <Link to="/">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Home
@@ -171,7 +171,7 @@ export default function AllProjects() {
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="mb-8">
-          <Button variant="outline" asChild className="mb-4">
+          <Button variant="outline" asChild className="mb-4 cursor-pointer">
             <Link to="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
@@ -366,7 +366,7 @@ export default function AllProjects() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="w-full text-xs"
+                                  className="w-full text-xs cursor-pointer"
                                   asChild
                                 >
                                   <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
@@ -385,7 +385,7 @@ export default function AllProjects() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="w-full text-xs"
+                                className="w-full text-xs cursor-pointer"
                                 asChild
                               >
                                 <a href={repo.html_url} target="_blank" rel="noopener noreferrer">

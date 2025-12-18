@@ -211,7 +211,7 @@ export function CreateBlogPost() {
                     type="button"
                     variant="outline"
                     onClick={() => imageInputRef.current?.click()}
-                    className="gap-2"
+                    className="gap-2 cursor-pointer"
                   >
                     <ImageIcon className="h-4 w-4" />
                     Upload Images
@@ -239,7 +239,7 @@ export function CreateBlogPost() {
                           type="button"
                           variant="destructive"
                           size="icon"
-                          className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                           onClick={() => removeImage(index)}
                         >
                           <X className="h-4 w-4" />
@@ -258,7 +258,7 @@ export function CreateBlogPost() {
                     type="button"
                     variant="outline"
                     onClick={() => videoInputRef.current?.click()}
-                    className="gap-2"
+                    className="gap-2 cursor-pointer"
                   >
                     <Video className="h-4 w-4" />
                     Upload Videos
@@ -282,7 +282,7 @@ export function CreateBlogPost() {
                           type="button"
                           variant="destructive"
                           size="icon"
-                          className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                           onClick={() => removeVideo(index)}
                         >
                           <X className="h-4 w-4" />
@@ -309,7 +309,12 @@ export function CreateBlogPost() {
                       }
                     }}
                   />
-                  <Button type="button" variant="outline" onClick={addTag}>
+                  <Button
+                    className="cursor-pointer"
+                    type="button"
+                    variant="outline"
+                    onClick={addTag}
+                  >
                     <Tag className="h-4 w-4" />
                   </Button>
                 </div>
@@ -337,7 +342,7 @@ export function CreateBlogPost() {
 
               {/* Actions */}
               <div className="flex gap-4 pt-4">
-                <Button type="submit" size="lg" className="gap-2" disabled={loading}>
+                <Button type="submit" size="lg" className="gap-2 cursor-pointer" disabled={loading}>
                   <Upload className="h-4 w-4" />
                   {loading
                     ? isEditing
@@ -347,7 +352,13 @@ export function CreateBlogPost() {
                       ? 'Update Post'
                       : 'Publish Post'}
                 </Button>
-                <Button type="button" variant="outline" size="lg" onClick={() => navigate('/blog')}>
+                <Button
+                  className="cursor-pointer"
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  onClick={() => navigate('/blog')}
+                >
                   Cancel
                 </Button>
               </div>

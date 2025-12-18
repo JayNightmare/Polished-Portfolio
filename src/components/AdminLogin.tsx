@@ -74,7 +74,7 @@ export function AdminLogin() {
                 />
                 {error && <p className="text-destructive text-sm">{error}</p>}
               </div>
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full cursor-pointer" disabled={loading}>
                 {loading ? 'Authenticating...' : 'Unlock'}
               </Button>
             </form>

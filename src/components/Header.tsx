@@ -167,7 +167,7 @@ export function Header() {
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
-              className="h-9 w-9 p-0 hover:bg-accent/50 transition-colors duration-300"
+              className="h-9 w-9 p-0 hover:bg-accent/50 transition-colors duration-300 cursor-pointer"
             >
               <AnimatePresence mode="wait">
                 {isDark ? (
@@ -201,7 +201,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0"
+                className="h-9 w-9 p-0 cursor-pointer"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 <AnimatePresence mode="wait">

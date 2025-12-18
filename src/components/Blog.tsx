@@ -106,7 +106,7 @@ export function Blog() {
           </div>
           {isAdmin && (
             <Link to="/blog/new">
-              <Button size="lg" className="gap-2">
+              <Button size="lg" className="gap-2 cursor-pointer">
                 <Plus className="h-5 w-5" />
                 New Post
               </Button>
@@ -124,7 +124,9 @@ export function Blog() {
           <Card className="text-center py-12">
             <CardContent>
               <p className="text-destructive mb-4">Error loading posts: {error}</p>
-              <Button onClick={() => window.location.reload()}>Retry</Button>
+              <Button className="cursor-pointer" onClick={() => window.location.reload()}>
+                Retry
+              </Button>
             </CardContent>
           </Card>
         ) : posts.length === 0 ? (
@@ -135,14 +137,14 @@ export function Blog() {
               </p>
               {isAdmin && (
                 <Link to="/blog/new">
-                  <Button>Create Your First Post</Button>
+                  <Button className="cursor-pointer">Create Your First Post</Button>
                 </Link>
               )}
             </CardContent>
           </Card>
         ) : (
           <div className="grid gap-6">
-            <div className="grid gap-4 lg:grid-cols-[1.2fr,3fr] items-start">
+            <div className="grid gap-6 lg:grid-cols-[1.2fr,3fr] items-start">
               <div className="space-y-3">
                 <Input
                   placeholder="Search by title or content"
@@ -161,7 +163,7 @@ export function Blog() {
                           onClick={() => toggleTag(tag)}
                           className={`px-3 py-1 text-sm rounded-full border transition-colors ${
                             isActive
-                              ? 'bg-primary text-primary-foreground border-primary'
+                              ? 'bg-primary text-primary-foreground border-primary cursor-pointer'
                               : 'bg-muted text-foreground hover:border-primary'
                           }`}
                         >
@@ -175,7 +177,7 @@ export function Blog() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="gap-2"
+                      className="gap-2 cursor-pointer"
                       onClick={clearFilters}
                     >
                       <X className="h-4 w-4" /> Clear

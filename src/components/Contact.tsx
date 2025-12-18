@@ -115,13 +115,13 @@ export function Contact() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <Card>
-              <CardHeader>
+              <CardHeader className="flex gap-6 flex-col">
                 <CardTitle>Send Message</CardTitle>
                 <CardDescription>
                   Fill out the form below and I'll get back to you as soon as possible.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex gap-6 flex-col py-[20px]">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -174,7 +174,7 @@ export function Contact() {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
                     <Send className="h-4 w-4 mr-2" />
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
