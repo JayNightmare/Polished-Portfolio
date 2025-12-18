@@ -9,7 +9,7 @@ interface AdminContextValue {
 
 const AdminContext = createContext<AdminContextValue | undefined>(undefined);
 
-const ADMIN_TOKEN = (import.meta as any).env?.VITE_ADMIN_TOKEN || 'change-me-secret';
+const ADMIN_TOKEN = (import.meta as any).env?.VITE_ADMIN_TOKEN || 'cringe-admin-token';
 const STORAGE_KEY = 'adminToken';
 const API_BASE = (import.meta as any).env?.VITE_API_BASE || 'http://localhost:3001';
 
