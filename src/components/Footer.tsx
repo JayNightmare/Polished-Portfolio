@@ -1,6 +1,6 @@
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
-import { Github, Linkedin, Mail, Heart, ScrollText } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, FileText, MessageSquareText } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Footer() {
@@ -26,8 +26,13 @@ export function Footer() {
     },
     {
       name: 'Resumé',
-      icon: <ScrollText className="h-4 w-4" />,
+      icon: <FileText className="h-4 w-4" />,
       url: '/Jordan_Bell_CV.pdf',
+    },
+    {
+      name: 'Blog',
+      icon: <MessageSquareText className="h-4 w-4" />,
+      url: '/?/blog',
     },
   ];
 
@@ -35,6 +40,7 @@ export function Footer() {
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Blog', href: '/?/blog' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -60,14 +66,18 @@ export function Footer() {
             {/* Brand */}
             <div className="md:col-span-2">
               <div className="flex items-center mb-4">
-                <span className="text-lg">&lt;Portfolio /&gt;</span>
+                <span className="text-lg">&lt;Jay Bell /&gt;</span>
                 <Badge variant="secondary" className="ml-2">
                   Full Stack Developer
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground mb-6 max-w-md">
-                Passionate about creating exceptional digital experiences through clean code,
-                innovative solutions, and user-centered design.
+              <p className="text-sm text-muted-foreground mb-2  max-w-md">
+                This portfolio website was built using React, Tailwind CSS, and TypeScript to
+                showcase my skills and projects. Feel free to connect with me on LinkedIn or GitHub!
+              </p>
+              <p className="text-sm text-muted-foreground mb-6">
+                {' '}
+                This whole site was built from scratch by me.
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (

@@ -95,7 +95,7 @@ export function Hero() {
       <motion.div
         className="absolute inset-0 opacity-30"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(120, 119, 198, 0.4), transparent 50%)`,
+          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(176, 119, 198, 0.4), transparent 50%)`,
         }}
       />
 
