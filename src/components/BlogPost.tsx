@@ -24,7 +24,7 @@ export function BlogPost() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPostType | null>(null);
-  const md = new MarkdownIt({ html: true, linkify: true, breaks: true });
+  const md = new MarkdownIt({ html: true, linkify: true, breaks: true, typographer: true });
   const { isAdmin } = useAdmin();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,6 +51,20 @@ export function BlogPost() {
 
     fetchPost();
   }, [id]);
+
+  // Mark post as read once loaded
+  useEffect(() => {
+    if (!post?.id) return;
+    try {
+      const key = 'readPosts';
+      const existing: string[] = JSON.parse(localStorage.getItem(key) || '[]');
+      if (!existing.includes(post.id)) {
+        localStorage.setItem(key, JSON.stringify([...existing, post.id]));
+      }
+    } catch (_) {
+      // ignore localStorage issues
+    }
+  }, [post?.id]);
 
   const handleDelete = async () => {
     if (!isAdmin) return;

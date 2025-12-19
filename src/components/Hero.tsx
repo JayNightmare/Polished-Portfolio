@@ -1,6 +1,15 @@
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Github, Linkedin, Mail, Download, ArrowDown, Sparkles, ScrollText } from 'lucide-react';
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Download,
+  ArrowDown,
+  Sparkles,
+  FileText,
+  MessageSquareText,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import Logo from '../assets/icon.svg';
@@ -9,6 +18,10 @@ const logo = Logo;
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [newPostsCount, setNewPostsCount] = useState(0);
+  const [unreadNewCount, setUnreadNewCount] = useState(0);
+
+  const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001';
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -18,6 +31,39 @@ export function Hero() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Fetch recent blog posts and compute unread counts
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/posts`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+
+        const recent = (Array.isArray(data) ? data : []).filter((p: any) => {
+          const d = new Date(p.date);
+          return !isNaN(d.getTime()) && d >= weekAgo;
+        });
+
+        setNewPostsCount(recent.length);
+
+        const stored = localStorage.getItem('readPosts');
+        const readIds: string[] = stored ? JSON.parse(stored) : [];
+        const readSet = new Set(readIds);
+        const unread = recent.filter((p: any) => {
+          const id = p._id || p.id;
+          return id && !readSet.has(id);
+        }).length;
+        setUnreadNewCount(unread);
+      } catch (_) {
+        // silently ignore for hero badge
+      }
+    };
+
+    fetchRecentPosts();
+  }, [API_BASE]);
 
   const scrollToContact = () => {
     const element = document.getElementById('contact');
@@ -231,32 +277,48 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 1.2 }}
           >
             {[
-              { href: 'https://github.com/JayNightmare', icon: Github, label: 'GitHub' },
-              { href: 'https://linkedin.com/in/jordan-s-bell/', icon: Linkedin, label: 'LinkedIn' },
-              { href: 'mailto:jn3.enquiries@gmail.com', icon: Mail, label: 'Email' },
-              { href: '/Jordan_Bell_CV.pdf', icon: ScrollText, label: 'Resume' },
+              {
+                href: 'https://github.com/JayNightmare',
+                icon: Github,
+                label: 'GitHub',
+                new: false,
+              },
+              {
+                href: 'https://linkedin.com/in/jordan-s-bell/',
+                icon: Linkedin,
+                label: 'LinkedIn',
+                new: false,
+              },
+              { href: '/?/blog', icon: MessageSquareText, label: 'Blog', new: true },
+              { href: 'mailto:jn3.enquiries@gmail.com', icon: Mail, label: 'Email', new: false },
+              { href: '/Jordan_Bell_CV.pdf', icon: FileText, label: 'Resume', new: false },
             ].map((social, index) => (
               <motion.a
                 key={social.label}
                 href={social.href}
                 target={social.href.startsWith('mailto') ? undefined : '_blank'}
                 rel={social.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                className="p-3 rounded-full bg-muted hover:bg-accent transition-all duration-300 group relative overflow-hidden"
-                whileHover={{
-                  scale: 1.1,
-                  rotate: 5,
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
-                }}
+                className="relative p-3 rounded-full bg-muted transition-all duration-300 group rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors"
                 whileTap={{ scale: 0.9 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+                transition={{ duration: 0.1, delay: 0.1 }}
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100"
-                  initial={false}
-                  transition={{ duration: 0.3 }}
-                />
+                {social.new && unreadNewCount > 0 && (
+                  <Badge className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 border-destructive border-2 bg-background/50 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full pointer-events-none">
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-transparent via-pink/20 to-transparent"
+                      initial={{ x: '-100%' }}
+                      animate={{ x: '100%' }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: 1,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                    <span className="relative z-10">NEW</span>
+                  </Badge>
+                )}
+
                 <social.icon className="h-5 w-5 relative z-10 group-hover:text-primary transition-colors duration-300" />
               </motion.a>
             ))}
