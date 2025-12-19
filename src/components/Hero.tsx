@@ -229,49 +229,7 @@ export function Hero() {
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto"
-            >
-              <Button
-                onClick={scrollToProjects}
-                size="lg"
-                className="w-full sm:w-auto group relative overflow-hidden cursor-pointer"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">View My Work</span>
-              </Button>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full sm:w-auto"
-            >
-              <Button
-                onClick={scrollToContact}
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto group cursor-pointer"
-              >
-                <span>Get In Touch</span>
-              </Button>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="flex justify-center space-x-6"
+            className="flex justify-center space-x-6 mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
@@ -322,6 +280,48 @@ export function Hero() {
                 <social.icon className="h-5 w-5 relative z-10 group-hover:text-primary transition-colors duration-300" />
               </motion.a>
             ))}
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto"
+            >
+              <Button
+                onClick={scrollToProjects}
+                size="lg"
+                className="w-full sm:w-auto group relative overflow-hidden cursor-pointer"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.6 }}
+                />
+                <span className="relative z-10">View My Work</span>
+              </Button>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto"
+            >
+              <Button
+                onClick={scrollToContact}
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto group cursor-pointer"
+              >
+                <span>Get In Touch</span>
+              </Button>
+            </motion.div>
           </motion.div>
 
           {/* Scroll indicator */}
