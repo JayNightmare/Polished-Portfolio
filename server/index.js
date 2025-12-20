@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // MongoDB connection
 let db;
 let postsCollection;
+let siteViewsCollection;
 
 async function connectDB() {
   try {
@@ -25,6 +26,15 @@ async function connectDB() {
     await client.connect();
     db = client.db();
     postsCollection = db.collection('BlogPosts');
+    siteViewsCollection = db.collection('SiteViews');
+
+    // Ensure SiteViews has at least one document
+    const countDoc = await siteViewsCollection.findOne({});
+    if (!countDoc) {
+      await siteViewsCollection.insertOne({ count: 0 });
+      console.log('Initialized SiteViews collection');
+    }
+
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -152,6 +162,32 @@ app.post('/api/admin/login', (req, res) => {
     res.json({ success: true });
   } else {
     res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Get view count
+app.get('/api/views', async (req, res) => {
+  try {
+    const doc = await siteViewsCollection.findOne({});
+    res.json({ count: doc ? doc.count : 0 });
+  } catch (error) {
+    console.error('Error fetching view count:', error);
+    res.status(500).json({ error: 'Failed to fetch view count' });
+  }
+});
+
+// Increment view count
+app.post('/api/views', async (req, res) => {
+  try {
+    const doc = await siteViewsCollection.findOneAndUpdate(
+      {},
+      { $inc: { count: 1 } },
+      { returnDocument: 'after', upsert: true }
+    );
+    res.json({ count: doc ? doc.count : 1 });
+  } catch (error) {
+    console.error('Error incrementing view count:', error);
+    res.status(500).json({ error: 'Failed to increment view count' });
   }
 });
 

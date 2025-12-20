@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import {
@@ -11,7 +12,7 @@ import {
   MessageSquareText,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Logo from '../assets/icon.svg';
 
 const logo = Logo;
@@ -20,6 +21,8 @@ export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [newPostsCount, setNewPostsCount] = useState(0);
   const [unreadNewCount, setUnreadNewCount] = useState(0);
+  const [starCount, setStarCount] = useState(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001';
 
@@ -31,6 +34,96 @@ export function Hero() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Fetch and increment view count
+  useEffect(() => {
+    const handleViewCount = async () => {
+      try {
+        const hasVisited = localStorage.getItem('hasVisited');
+        let count = 0;
+
+        if (!hasVisited) {
+          // First visit: increment count
+          const res = await fetch(`${API_BASE}/api/views`, { method: 'POST' });
+          if (res.ok) {
+            const data = await res.json();
+            count = data.count;
+            localStorage.setItem('hasVisited', 'true');
+          }
+        } else {
+          // Return visit: just fetch count
+          const res = await fetch(`${API_BASE}/api/views`);
+          if (res.ok) {
+            const data = await res.json();
+            count = data.count;
+          }
+        }
+        setStarCount(count);
+      } catch (error) {
+        console.error('Error handling view count:', error);
+      }
+    };
+
+    handleViewCount();
+  }, [API_BASE]);
+
+  // Draw stars on canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const drawStars = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Handle high-DPI displays
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Use a static color that works well in both themes (semi-transparent white/grey)
+      ctx.fillStyle = 'rgba(150, 150, 150, 0.5)';
+
+      // Cap the number of stars to prevent performance issues
+      const count = Math.min(starCount, 2000);
+
+      for (let i = 0; i < count; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        // Random size for the star
+        const size = Math.random() * 2 + 1;
+
+        // Draw a 4-point star
+        ctx.beginPath();
+        const outerRadius = size;
+        const innerRadius = size / 2;
+        for (let j = 0; j < 4; j++) {
+          const angle = (j * Math.PI) / 2;
+          ctx.lineTo(x + Math.cos(angle) * outerRadius, y + Math.sin(angle) * outerRadius);
+          const innerAngle = angle + Math.PI / 4;
+          ctx.lineTo(
+            x + Math.cos(innerAngle) * innerRadius,
+            y + Math.sin(innerAngle) * innerRadius
+          );
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+    };
+
+    drawStars();
+    window.addEventListener('resize', drawStars);
+    return () => window.removeEventListener('resize', drawStars);
+  }, [starCount]);
 
   // Fetch recent blog posts and compute unread counts
   useEffect(() => {
@@ -98,6 +191,9 @@ export function Hero() {
           background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(176, 119, 198, 0.4), transparent 50%)`,
         }}
       />
+
+      {/* Star-based view counter */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
 
       {/* Floating elements */}
       <motion.div
