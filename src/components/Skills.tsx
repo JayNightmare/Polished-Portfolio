@@ -31,7 +31,7 @@ export function Skills() {
         { name: 'Vue.js', level: 35, rank: 'Learning', year: '0' },
         { name: 'Next.js', level: 28, rank: 'Learning', year: '0' },
         { name: 'Sass', level: 25, rank: 'Learning', year: '1' },
-        { name: 'Vite', level: 12, rank: 'Learning', year: '0' },
+        { name: 'Vite', level: 52, rank: 'Learning', year: '0' },
       ],
     },
     {
@@ -64,7 +64,7 @@ export function Skills() {
         { name: 'ESLint', level: 92, rank: 'Proficient', year: '1' },
         { name: 'Prettier', level: 90, rank: 'Intermediate', year: '2' },
         { name: 'Figma', level: 86, rank: 'Advanced', year: '4' },
-        { name: 'VSCode', level: 96, rank: 'advanced', year: '4' },
+        { name: 'VSCode', level: 96, rank: 'Advanced', year: '4' },
       ],
     },
     {
@@ -134,7 +134,7 @@ export function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.2 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -5 }}
+                whileHover={{ y: 0 }}
                 className="h-full"
               >
                 <Card className="h-full group hover:shadow-xl transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/80 backdrop-blur-sm">
@@ -158,7 +158,7 @@ export function Skills() {
                             (parseInt(b.year || '0', 10) || 0) - (parseInt(a.year || '0', 10) || 0)
                         )
                         .map((skill, skillIndex) => (
-                          <HoverCard key={skillIndex} openDelay={200}>
+                          <HoverCard key={skillIndex} openDelay={100}>
                             <HoverCardTrigger asChild>
                               <motion.div
                                 className="group/skill cursor-pointer"
@@ -202,7 +202,7 @@ export function Skills() {
                                     className={`absolute top-0 left-0 h-1.5 bg-gradient-to-r ${category.color} rounded-full opacity-0 group-hover/skill:opacity-60`}
                                     style={{ width: `${skill.level}%` }}
                                     animate={{
-                                      opacity: hoveredSkill === skill.name ? [0.6, 1, 0.6] : 0,
+                                      opacity: hoveredSkill === skill.name ? [1, 1, 1] : 0,
                                     }}
                                     transition={{ duration: 1, repeat: Infinity }}
                                   />
@@ -212,20 +212,20 @@ export function Skills() {
                             <HoverCardContent className="w-64" side="top" align="start">
                               <div className="space-y-2">
                                 <h4 className="text-sm font-semibold flex items-center gap-2">
-                                  <div
-                                    className={`p-1.5 rounded-md bg-gradient-to-r ${category.color} text-white`}
+                                  {/* <div
+                                    className={`p-2 rounded-md bg-gradient-to-r ${category.color} text-white`}
                                   >
                                     {category.icon}
-                                  </div>
+                                  </div> */}
                                   {skill.name}
                                 </h4>
                                 <div className="space-y-1.5 text-sm text-muted-foreground">
-                                  <div className="flex items-center gap-2">
+                                  {/* <div className="flex items-center gap-2">
                                     <Award className="h-4 w-4" />
                                     <span>
                                       Proficiency: <strong>{skill.rank}</strong>
                                     </span>
-                                  </div>
+                                  </div> */}
                                   <div className="flex items-center gap-2">
                                     <Calendar className="h-4 w-4" />
                                     <span>
@@ -245,8 +245,10 @@ export function Skills() {
                   </CardContent>
                 </Card>
                 <p className="text-xs text-muted-foreground text-center mt-2">
-                  Years Experience:{' '}
-                  {category.skills.reduce((acc, skill) => Math.max(acc, parseInt(skill.year)), 0)}
+                  Average: Years:{' '}
+                  <strong>
+                    {category.skills.reduce((acc, skill) => Math.max(acc, parseInt(skill.year)), 0)}
+                  </strong>
                 </p>
               </motion.div>
             ))}

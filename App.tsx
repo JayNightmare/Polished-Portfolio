@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header } from './src/components/Header';
 import { Hero } from './src/components/Hero';
 import { About } from './src/components/About';
+import { GitHubOrgStrip } from './src/components/GitHubOrgStrip';
 import { Skills } from './src/components/Skills';
 import { Projects } from './src/components/Projects';
 import { Contact } from './src/components/Contact';
@@ -33,6 +34,7 @@ export default function App() {
                   element={
                     <>
                       <Hero />
+                      <GitHubOrgStrip />
                       <About />
                       <Skills />
                       <Projects />
