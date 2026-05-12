@@ -1,12 +1,10 @@
 import { Badge } from './ui/badge';
-import React, { useState, lazy, Suspense } from 'react';
-const ReadmeModal = lazy(() => import('./ReadmeModal'));
-// import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
-import MarkdownIt from 'markdown-it';
+import { useState } from 'react';
+import { Modal } from './Modal';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { ExternalLink, Github, Star, GitFork, Calendar, Eye } from 'lucide-react';
+import { ExternalLink, Github, Star, Calendar, Eye } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useGitHub, type GitHubRepo } from './hooks/useGitHub';
 import { Skeleton } from './ui/skeleton';
@@ -25,7 +23,7 @@ export function Projects() {
         { enabled: isInView, includeRepos: true, includeOrganizations: false }
     );
 
-    // Modal state for README popup
+    // Modal state for project details
     const [open, setOpen] = useState(false);
     const [activeRepo, setActiveRepo] = useState<GitHubRepo | null>(null);
 
@@ -33,8 +31,6 @@ export function Projects() {
         setActiveRepo(repo);
         setOpen(true);
     };
-
-    const md = new MarkdownIt();
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-US', {
@@ -479,14 +475,6 @@ export function Projects() {
                                             </Card>
                                         </motion.div>
                                     ))}
-                                {/* Readme Modal for Other Projects (lazy) */}
-                                <Suspense fallback={null}>
-                                    <ReadmeModal
-                                        repo={activeRepo}
-                                        isOpen={open}
-                                        onClose={() => setOpen(false)}
-                                    />
-                                </Suspense>
                             </div>
                         )}
                     </div>
@@ -510,6 +498,8 @@ export function Projects() {
                     </motion.div>
                 </div>
             </div>
+
+            <Modal repo={activeRepo} isOpen={open} onClose={() => setOpen(false)} />
         </section>
     );
 }

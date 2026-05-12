@@ -317,18 +317,24 @@ export function Hero() {
                             }
                             aria-pressed={isMusicPlaying}
                             className={`group relative flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 cursor-pointer ${
-                                isMusicPlaying ? 'bg-amber-200/90' : 'bg-amber-100/85 animate-pulse'
+                                isMusicPlaying ? '' : 'animate-pulse'
                             }`}
                             whileHover={{ scale: 1.08, rotate: 8 }}
                             whileTap={{ scale: 0.95 }}
                             transition={{ duration: 0.2 }}
                         >
-                            <Sparkles className="h-3 w-3 text-amber-900 fill-current" />
+                            <Sparkles
+                                className={`h-3 w-3 transition-colors duration-300 fill-current ${isMusicPlaying ? 'text-[rgba(0, 128, 0, 0.8)]' : 'text-[rgba(150, 150, 150, 0.5)]'}`}
+                            />
                         </motion.button>
                     </motion.div>
 
                     <motion.div>
-                        <img src={logo} alt="Logo" className="w-[24px] h-[24px] mx-auto mb-4" />
+                        <img
+                            src={logo}
+                            alt="Logo"
+                            className="w-[24px] h-[24px] mx-auto mb-4 animate-bounce transition-transform duration-300"
+                        />
                     </motion.div>
 
                     <motion.div
@@ -398,7 +404,7 @@ export function Hero() {
                     </motion.h1>
 
                     <motion.h1
-                        className="text-4xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
+                        className="text-6xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
@@ -507,33 +513,28 @@ export function Hero() {
                         <motion.div
                             whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
                             whileTap={{ scale: 0.95 }}
-                            className="w-full sm:w-auto"
+                            className="w-auto sm:w-auto"
                         >
                             <Button
                                 onClick={scrollToProjects}
+                                variant="default"
                                 size="lg"
-                                className="w-full sm:w-auto group relative overflow-hidden cursor-pointer"
+                                className="w-auto sm:w-auto group cursor-pointer"
                             >
-                                <motion.div
-                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                                    initial={{ x: '-100%' }}
-                                    whileHover={{ x: '100%' }}
-                                    transition={{ duration: 0.6 }}
-                                />
-                                <span className="relative z-10">View My Work</span>
+                                <span>View My Work</span>
                             </Button>
                         </motion.div>
 
                         <motion.div
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="w-full sm:w-auto"
+                            className="w-auto sm:w-auto"
                         >
                             <Button
                                 onClick={scrollToContact}
                                 variant="outline"
                                 size="lg"
-                                className="w-full sm:w-auto group cursor-pointer"
+                                className="w-auto sm:w-auto group cursor-pointer"
                             >
                                 <span>Get In Touch</span>
                             </Button>
