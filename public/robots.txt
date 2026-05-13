@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /blog/new
+Disallow: /blog/edit/
+
+Sitemap: https://portfolio.nexusgit.info/sitemap.xml

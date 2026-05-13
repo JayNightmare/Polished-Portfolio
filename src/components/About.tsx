@@ -38,7 +38,9 @@ export function About() {
                         <Badge variant="outline" className="mb-4">
                             About Me
                         </Badge>
-                        <h2 className="text-3xl md:text-4xl mb-6">Turning Ideas Into Reality</h2>
+                        <h2 className="text-3xl md:text-4xl mb-6">
+                            Full-Stack Developer Building Real-World Products
+                        </h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             Constantly trying to evolve my knowledge in programming by exposing
                             myself to different technologies.

@@ -118,7 +118,9 @@ export default function AllProjects() {
                                 Back to Home
                             </Link>
                         </Button>
-                        <h2 className="text-3xl text-center mb-8">All Projects</h2>
+                        <h2 className="text-3xl text-center mb-8">
+                            All Software Development Projects
+                        </h2>
                     </div>
                     <div className="text-center">Loading projects...</div>
                 </div>
@@ -136,7 +138,9 @@ export default function AllProjects() {
                                 Back to Home
                             </Link>
                         </Button>
-                        <h2 className="text-3xl text-center mb-8">All Projects</h2>
+                        <h2 className="text-3xl text-center mb-8">
+                            All Software Development Projects
+                        </h2>
                     </div>
                     <div className="text-center text-red-500">{error}</div>
                 </div>
@@ -172,7 +176,7 @@ export default function AllProjects() {
                         </motion.div>
                     </motion.div>
 
-                    <h2 className="text-3xl text-center mb-8">All Projects</h2>
+                    <h2 className="text-3xl text-center mb-8">All Software Development Projects</h2>
 
                     {/* Search and Filters */}
                     <div className="flex flex-col md:flex-row gap-4 mb-8">

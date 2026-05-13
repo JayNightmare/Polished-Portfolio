@@ -119,7 +119,9 @@ export function Skills() {
                                 Technical Skills
                             </Badge>
                         </motion.div>
-                        <h2 className="text-3xl md:text-4xl mb-6">Technologies I Work With</h2>
+                        <h2 className="text-3xl md:text-4xl mb-6">
+                            Tech Stack for React, TypeScript, Node.js, and AI Projects
+                        </h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             A comprehensive toolkit for building modern web applications, from
                             frontend interfaces to scalable backend systems.

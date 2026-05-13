@@ -100,7 +100,9 @@ export function Blog() {
             <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-center mb-12">
                     <div>
-                        <h1 className="text-4xl font-bold mb-4">Project Updates</h1>
+                        <h1 className="text-4xl font-bold mb-4">
+                            Technical Blog and Project Updates
+                        </h1>
                         <p className="text-muted-foreground">
                             Follow my journey as I build and share progress on my projects
                         </p>
@@ -255,6 +257,8 @@ export function Blog() {
                                                                         src={image}
                                                                         alt={`Preview ${index + 1}`}
                                                                         className="w-full h-full object-cover"
+                                                                        loading="lazy"
+                                                                        decoding="async"
                                                                     />
                                                                 </div>
                                                             ))}

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 import {
     additionalTrustedByCompanies,
     type TrustedByCompany,
@@ -12,6 +13,14 @@ interface GitHubOrgStripProps {
 export function GitHubOrgStrip({
     additionalTrustedBy = additionalTrustedByCompanies,
 }: GitHubOrgStripProps) {
+    const toWebpCandidate = (source: string) => {
+        if (!/\.(png|jpg|jpeg)$/i.test(source)) {
+            return null;
+        }
+
+        return source.replace(/\.(png|jpg|jpeg)$/i, '.webp');
+    };
+
     const trustedByItems = useMemo<TrustedByItem[]>(() => {
         const merged = new Map<string, TrustedByItem>();
 
@@ -39,37 +48,52 @@ export function GitHubOrgStrip({
         <section id="trusted-by" className="py-12">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-4">
-                    <h1 className="text-2xl md:text-3xl tracking-[0.08em]">Trusted By</h1>
+                    <h2 className="text-2xl md:text-3xl tracking-[0.08em]">Trusted By</h2>
                 </div>
 
                 <div className="org-strip-mask pointer-events-none select-none" aria-hidden="true">
                     <div className="org-strip-track">
                         {[1, 2].map((group) => (
                             <div key={group} className="org-strip-group">
-                                {trustedByItems.map((org) => (
-                                    <div
-                                        key={`${org.id}-${group}`}
-                                        className="flex min-w-[220px] items-center justify-center gap-3 px-4 py-3 border-r border-l"
-                                    >
-                                        <img
-                                            src={org.img}
-                                            alt={`${org.name} logo`}
-                                            className="h-9 rounded-[10%] grayscale opacity-80"
-                                            loading="lazy"
-                                            draggable={false}
-                                        />
-                                        <span
-                                            className="truncate text-sm md:text-base tracking-[0.08em] uppercase text-muted-foreground"
-                                            style={{
-                                                fontFamily: org.font
-                                                    ? `'${org.font}', system-ui`
-                                                    : `'Sometype Mono', monospace`,
-                                            }}
+                                {trustedByItems.map((org) => {
+                                    const webpSrc = toWebpCandidate(org.img);
+
+                                    return (
+                                        <div
+                                            key={`${org.id}-${group}`}
+                                            className="flex min-w-[220px] items-center justify-center gap-3 px-4 py-3 border-r border-l"
                                         >
-                                            <strong>{org.name}</strong>
-                                        </span>
-                                    </div>
-                                ))}
+                                            <ImageWithFallback
+                                                src={org.img}
+                                                sources={
+                                                    webpSrc
+                                                        ? [
+                                                              {
+                                                                  srcSet: webpSrc,
+                                                                  type: 'image/webp',
+                                                              },
+                                                          ]
+                                                        : undefined
+                                                }
+                                                alt={`${org.name} logo`}
+                                                className="h-9 rounded-[10%] grayscale opacity-80"
+                                                loading="lazy"
+                                                decoding="async"
+                                                draggable={false}
+                                            />
+                                            <span
+                                                className="truncate text-sm md:text-base tracking-[0.08em] uppercase text-muted-foreground"
+                                                style={{
+                                                    fontFamily: org.font
+                                                        ? `'${org.font}', system-ui`
+                                                        : `'Sometype Mono', monospace`,
+                                                }}
+                                            >
+                                                <strong>{org.name}</strong>
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         ))}
                     </div>

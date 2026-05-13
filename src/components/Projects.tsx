@@ -94,7 +94,7 @@ export function Projects() {
                             </Badge>
                         </motion.div>
                         <h2 className="text-3xl md:text-4xl mb-6">
-                            Projects That Make a Difference
+                            Featured Web Development and Open-Source Projects
                         </h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             A selection of projects that showcase my skills and passion for creating

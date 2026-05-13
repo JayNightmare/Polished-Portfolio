@@ -105,7 +105,9 @@ export function Contact() {
                         <Badge variant="outline" className="mb-4">
                             Get In Touch
                         </Badge>
-                        <h2 className="text-3xl md:text-4xl mb-6">Let's Work Together</h2>
+                        <h2 className="text-3xl md:text-4xl mb-6">
+                            Contact a Full-Stack Developer for Your Next Project
+                        </h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             Have a project in mind? I'd love to hear about it. Send me a message and
                             let's create something amazing together.

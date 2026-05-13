@@ -17,6 +17,7 @@ import {
     AlertDialogTrigger,
 } from './ui/alert-dialog';
 import { useAdmin, getAdminToken } from './AdminContext';
+import { SEOHead } from './SEOHead';
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001';
 
@@ -127,6 +128,13 @@ export function BlogPost() {
 
     return (
         <section className="py-20 px-4 sm:px-6 lg:px-8 blog-section">
+            {post && (
+                <SEOHead
+                    title={`${post.title} | Jay Bell Technical Blog`}
+                    description={`Read ${post.title} on Jay Bell's developer blog for practical software engineering and project insights.`}
+                    path={`/blog/${post.id}`}
+                />
+            )}
             <div className="max-w-4xl mx-auto">
                 {/* Back Button */}
                 <div className="mb-6">
@@ -221,6 +229,8 @@ export function BlogPost() {
                                                 src={image}
                                                 alt={`Image ${index + 1}`}
                                                 className="w-full h-auto object-cover cursor-pointer hover:scale-105 transition-transform"
+                                                loading="lazy"
+                                                decoding="async"
                                                 onClick={() => window.open(image, '_blank')}
                                             />
                                         </div>

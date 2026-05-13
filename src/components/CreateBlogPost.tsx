@@ -236,6 +236,8 @@ export function CreateBlogPost() {
                                                     src={image}
                                                     alt={`Upload ${index + 1}`}
                                                     className="w-full aspect-square object-cover rounded-md"
+                                                    loading="lazy"
+                                                    decoding="async"
                                                 />
                                                 <Button
                                                     type="button"

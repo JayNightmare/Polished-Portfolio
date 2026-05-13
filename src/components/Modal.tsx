@@ -686,6 +686,8 @@ function ContributorsPanel({
                         src={contributor.avatar_url}
                         alt=""
                         className="h-11 w-11 rounded-lg object-cover"
+                        loading="lazy"
+                        decoding="async"
                     />
                     <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-semibold text-white">

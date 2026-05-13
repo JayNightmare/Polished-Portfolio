@@ -39,19 +39,47 @@ export function Hero() {
 
     const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001';
 
+    const runWhenIdle = (callback: () => void, timeout = 1000) => {
+        if (typeof (globalThis as any).requestIdleCallback === 'function') {
+            const idleCallback = (globalThis as any).requestIdleCallback as (
+                cb: IdleRequestCallback,
+                options?: IdleRequestOptions
+            ) => number;
+            const id = idleCallback(() => callback(), { timeout });
+            return () => (globalThis as any).cancelIdleCallback?.(id);
+        }
+
+        const timer = setTimeout(callback, timeout);
+        return () => clearTimeout(timer);
+    };
+
     useEffect(() => {
+        let raf = 0;
         const handleMouseMove = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
+            if (raf) return;
+            raf = window.requestAnimationFrame(() => {
+                setMousePosition({ x: e.clientX, y: e.clientY });
+                raf = 0;
+            });
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        const cleanupIdle = runWhenIdle(() => {
+            window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        }, 1200);
+
+        return () => {
+            cleanupIdle();
+            window.removeEventListener('mousemove', handleMouseMove);
+            if (raf) {
+                window.cancelAnimationFrame(raf);
+            }
+        };
     }, []);
 
     // Prepare a local playlist. Audio starts only after user interaction.
     useEffect(() => {
         const audio = new Audio(HERO_MUSIC_TRACKS[0]);
-        audio.preload = 'auto';
+        audio.preload = 'none';
         audio.volume = 0.35;
 
         const handleTrackEnded = () => {
@@ -79,7 +107,6 @@ export function Hero() {
         }
 
         audio.src = HERO_MUSIC_TRACKS[activeTrackIndex];
-        audio.load();
 
         void audio.play().catch((error) => {
             console.error('Unable to start background music:', error);
@@ -87,7 +114,7 @@ export function Hero() {
         });
     }, [isMusicPlaying, activeTrackIndex]);
 
-    // Fetch and increment view count
+    // Fetch and increment view count without blocking first paint.
     useEffect(() => {
         const handleViewCount = async () => {
             try {
@@ -116,7 +143,11 @@ export function Hero() {
             }
         };
 
-        handleViewCount();
+        const cleanupIdle = runWhenIdle(() => {
+            void handleViewCount();
+        }, 1400);
+
+        return cleanupIdle;
     }, [API_BASE]);
 
     // Draw stars on canvas
@@ -180,7 +211,7 @@ export function Hero() {
         return () => window.removeEventListener('resize', drawStars);
     }, [starCount]);
 
-    // Fetch recent blog posts and compute unread counts
+    // Fetch recent blog posts and compute unread counts after initial render.
     useEffect(() => {
         const fetchRecentPosts = async () => {
             try {
@@ -210,7 +241,11 @@ export function Hero() {
             }
         };
 
-        fetchRecentPosts();
+        const cleanupIdle = runWhenIdle(() => {
+            void fetchRecentPosts();
+        }, 1700);
+
+        return cleanupIdle;
     }, [API_BASE]);
 
     const scrollToContact = () => {
@@ -361,7 +396,7 @@ export function Hero() {
                         </Badge>
                     </motion.div>
 
-                    <motion.h1
+                    <motion.p
                         className="text-4xl md:text-1xl lg:text-1xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
                         initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -401,7 +436,7 @@ export function Hero() {
                         >
                             Compaan
                         </motion.span>
-                    </motion.h1>
+                    </motion.p>
 
                     <motion.h1
                         className="text-6xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
@@ -415,7 +450,7 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className="inline-block"
                         >
-                            Software
+                            Full-Stack Software
                         </motion.span>{' '}
                         <motion.span
                             initial={{ opacity: 0, x: 50 }}
