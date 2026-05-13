@@ -20,6 +20,7 @@ import { AdminProvider, ProtectedRoute } from './src/components/AdminContext';
 import { AdminLogin } from './src/components/AdminLogin';
 import { SEOHead } from './src/components/SEOHead';
 import './src/styles/globals.css';
+import './src/styles/inline.css';
 import './src/styles/github-heatmap.css';
 
 export default function App() {
