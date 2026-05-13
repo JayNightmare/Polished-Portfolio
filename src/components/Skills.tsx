@@ -16,22 +16,78 @@ export function Skills() {
         rootMargin: '200px 0px',
     });
 
+    // Calculate years of experience based on a fixed start date (e.g., January 1, 2020)
+    const calculateExperienceYears = (startDate: string) => {
+        const start = new Date(startDate);
+        const now = new Date();
+        const years = now.getFullYear() - start.getFullYear();
+        const monthDiff = now.getMonth() - start.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < start.getDate())) {
+            return years - 1;
+        }
+        return years;
+    };
+
     const skillCategories = [
         {
             title: 'Frontend',
             icon: <Code className="h-5 w-5" />,
             color: 'from-blue-500 to-purple-600',
             skills: [
-                { name: 'React', level: 45, rank: 'Beginner', year: '2' },
-                { name: 'TypeScript', level: 90, rank: 'Learning', year: '1' },
-                { name: 'JavaScript', level: 96, rank: 'Intermediate', year: '3' },
-                { name: 'Tailwind CSS', level: 64, rank: 'Proficient', year: '1' },
-                { name: 'HTML5', level: 80, rank: 'Proficient', year: '4' },
-                { name: 'CSS3', level: 85, rank: 'Proficient', year: '4' },
-                { name: 'Vue.js', level: 35, rank: 'Learning', year: '0' },
-                { name: 'Next.js', level: 28, rank: 'Learning', year: '0' },
-                { name: 'Sass', level: 25, rank: 'Learning', year: '1' },
-                { name: 'Vite', level: 52, rank: 'Learning', year: '0' },
+                {
+                    name: 'React',
+                    level: 65,
+                    rank: 'Beginner',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'TypeScript',
+                    level: 70,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'JavaScript',
+                    level: 90,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2020-01-01'),
+                },
+                {
+                    name: 'Tailwind CSS',
+                    level: 70,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'HTML5',
+                    level: 80,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
+                {
+                    name: 'CSS3',
+                    level: 85,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
+                {
+                    name: 'Vue.js',
+                    level: 45,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Next.js',
+                    level: 40,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2024-01-01'),
+                },
+                {
+                    name: 'Vite',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
             ],
         },
         {
@@ -39,15 +95,60 @@ export function Skills() {
             icon: <Database className="h-5 w-5" />,
             color: 'from-green-500 to-teal-600',
             skills: [
-                { name: 'Node.js', level: 92, rank: 'Intermediate', year: '3' },
-                { name: 'Express', level: 90, rank: 'Proficient', year: '1' },
-                { name: 'Python', level: 85, rank: 'Learning', year: '1' },
-                { name: 'Django', level: 78, rank: 'Learning', year: '0' },
-                { name: 'PostgreSQL', level: 88, rank: 'Learning', year: '0' },
-                { name: 'MongoDB', level: 85, rank: 'Intermediate', year: '3' },
-                { name: 'REST APIs', level: 44, rank: 'Intermediate', year: '1' },
-                { name: 'GraphQL', level: 22, rank: 'Learning', year: '1' },
-                { name: 'Supabase', level: 38, rank: 'Learning', year: '0' },
+                {
+                    name: 'Node.js',
+                    level: 90,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2020-01-01'),
+                },
+                {
+                    name: 'Express',
+                    level: 90,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2020-01-01'),
+                },
+                {
+                    name: 'FastAPI',
+                    level: 85,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2024-01-01'),
+                },
+                {
+                    name: 'Django',
+                    level: 15,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'PostgreSQL',
+                    level: 30,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'MongoDB',
+                    level: 85,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'REST APIs',
+                    level: 55,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'GraphQL',
+                    level: 45,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Supabase',
+                    level: 35,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2024-01-01'),
+                },
             ],
         },
         {
@@ -55,16 +156,66 @@ export function Skills() {
             icon: <Wrench className="h-5 w-5" />,
             color: 'from-orange-500 to-red-600',
             skills: [
-                { name: 'Git', level: 95, rank: 'Intermediate', year: '5' },
-                { name: 'Docker', level: 82, rank: 'Learning', year: '1' },
-                { name: 'AWS', level: 78, rank: 'Learning', year: '1' },
-                { name: 'Vercel', level: 90, rank: 'Learning', year: '1' },
-                { name: 'GitHub Actions', level: 85, rank: 'Proficient', year: '2' },
-                { name: 'Jest', level: 88, rank: 'Learning', year: '1' },
-                { name: 'ESLint', level: 92, rank: 'Proficient', year: '1' },
-                { name: 'Prettier', level: 90, rank: 'Intermediate', year: '2' },
-                { name: 'Figma', level: 86, rank: 'Advanced', year: '4' },
-                { name: 'VSCode', level: 96, rank: 'Advanced', year: '4' },
+                {
+                    name: 'Git',
+                    level: 95,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
+                {
+                    name: 'Docker',
+                    level: 90,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'AWS',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Vercel',
+                    level: 90,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'GitHub Actions',
+                    level: 90,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Jest',
+                    level: 50,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'ESLint',
+                    level: 90,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Prettier',
+                    level: 90,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2020-01-01'),
+                },
+                {
+                    name: 'Figma',
+                    level: 90,
+                    rank: 'Advanced',
+                    year: calculateExperienceYears('2020-01-01'),
+                },
+                {
+                    name: 'VSCode',
+                    level: 99,
+                    rank: 'Advanced',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
             ],
         },
         {
@@ -72,16 +223,190 @@ export function Skills() {
             icon: <Users className="h-5 w-5" />,
             color: 'from-pink-500 to-rose-600',
             skills: [
-                { name: 'Problem Solving', level: 75, rank: 'Out-Of-The-Box Thinking', year: '0' },
-                { name: 'Team Collaboration', level: 92, rank: 'Leadership Training', year: '2' },
-                { name: 'Project Management', level: 88, rank: 'Task Management', year: '2' },
-                { name: 'Agile/Scrum', level: 90, rank: 'Intermediate', year: '2' },
-                { name: 'Code Review', level: 94, rank: 'Proficient', year: '2' },
-                { name: 'Mentoring', level: 85, rank: 'Proficient', year: '1' },
-                { name: 'Communication', level: 90, rank: 'Team Player', year: '0' },
+                {
+                    name: 'Problem Solving',
+                    level: 75,
+                    rank: 'Out-Of-The-Box Thinking',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Team Collaboration',
+                    level: 90,
+                    rank: 'Leadership Training',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Project Management',
+                    level: 90,
+                    rank: 'Task Management',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Agile/Scrum',
+                    level: 90,
+                    rank: 'Intermediate',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Code Review',
+                    level: 95,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Mentoring',
+                    level: 85,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Communication',
+                    level: 90,
+                    rank: 'Team Player',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+            ],
+        },
+        {
+            title: 'Artificial Intelligence',
+            icon: <Zap className="h-5 w-5" />,
+            color: 'from-yellow-500 to-yellow-600',
+            skills: [
+                {
+                    name: 'Python',
+                    level: 85,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
+                {
+                    name: 'Generative AI',
+                    level: 80,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'AI Integration',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Machine Learning',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Natural Language Processing',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'Computer Vision',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2022-01-01'),
+                },
+                {
+                    name: 'AI Ethics',
+                    level: 60,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Hugging Face',
+                    level: 70,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Transformers',
+                    level: 75,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2023-01-01'),
+                },
+                {
+                    name: 'Prompt Engineering',
+                    level: 50,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2024-01-01'),
+                },
+            ],
+        },
+        {
+            title: 'Other Programming Languages',
+            icon: <Code className="h-5 w-5" />,
+            color: 'from-gray-500 to-gray-600',
+            skills: [
+                {
+                    name: 'Java',
+                    level: 60,
+                    rank: 'Proficient',
+                    year: calculateExperienceYears('2019-01-01'),
+                },
+                {
+                    name: 'C#',
+                    level: 30,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2026-01-01'),
+                },
+                {
+                    name: 'C++',
+                    level: 45,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2026-01-01'),
+                },
+                {
+                    name: 'Go',
+                    level: 10,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2025-01-01'),
+                },
+                {
+                    name: 'Rust',
+                    level: 10,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2024-01-01'),
+                },
+                {
+                    name: 'PHP',
+                    level: 15,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
+                {
+                    name: 'Ruby',
+                    level: 10,
+                    rank: 'Learning',
+                    year: calculateExperienceYears('2021-01-01'),
+                },
             ],
         },
     ];
+
+    const getAverageYears = (skills: Array<{ year: number }>) => {
+        if (skills.length === 0) return 0;
+        const total = skills.reduce((sum, skill) => sum + skill.year, 0);
+        return total / skills.length;
+    };
+
+    const normalizeToHalfYear = (years: number) => Math.round(years * 2) / 2;
+
+    const formatYearsLabel = (years: number) => {
+        const normalizedYears = normalizeToHalfYear(years);
+        const wholeYears = Math.floor(normalizedYears);
+        const hasHalfYear = normalizedYears % 1 !== 0;
+
+        if (normalizedYears === 0) return '0 years';
+        if (normalizedYears === 0.5) return 'half a year';
+
+        if (hasHalfYear) {
+            return `${wholeYears} and a half years`;
+        }
+
+        return `${wholeYears} year${wholeYears === 1 ? '' : 's'}`;
+    };
 
     return (
         <section id="skills" className="py-20 relative overflow-hidden">
@@ -119,16 +444,15 @@ export function Skills() {
                                 Technical Skills
                             </Badge>
                         </motion.div>
-                        <h2 className="text-3xl md:text-4xl mb-6">
-                            Tech Stack for React, TypeScript, Node.js, and AI Projects
-                        </h2>
+                        <h2 className="text-3xl md:text-4xl mb-6">Personal Tech Stack</h2>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                            A comprehensive toolkit for building modern web applications, from
-                            frontend interfaces to scalable backend systems.
+                            A snapshot of my current technical skills and tools I use to build my
+                            projects. It is always evolving as I'm learning new technologies and
+                            improving my proficiency in existing ones.
                         </p>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
                         {skillCategories.map((category, index) => (
                             <motion.div
                                 key={index}
@@ -159,11 +483,7 @@ export function Skills() {
                                     <CardContent>
                                         <div className="space-y-3">
                                             {[...category.skills]
-                                                .sort(
-                                                    (a, b) =>
-                                                        (parseInt(b.year || '0', 10) || 0) -
-                                                        (parseInt(a.year || '0', 10) || 0)
-                                                )
+                                                .sort((a, b) => (b.year || 0) - (a.year || 0))
                                                 .map((skill, skillIndex) => (
                                                     <HoverCard key={skillIndex} openDelay={100}>
                                                         <HoverCardTrigger asChild>
@@ -267,11 +587,11 @@ export function Skills() {
                                                                         <span>
                                                                             Experience:{' '}
                                                                             <strong>
-                                                                                {skill.year === '0'
+                                                                                {skill.year === 0
                                                                                     ? 'Less than 1'
                                                                                     : skill.year}{' '}
                                                                                 year
-                                                                                {skill.year !== '1'
+                                                                                {skill.year !== 1
                                                                                     ? 's'
                                                                                     : ''}
                                                                             </strong>
@@ -286,12 +606,9 @@ export function Skills() {
                                     </CardContent>
                                 </Card>
                                 <p className="text-xs text-muted-foreground text-center mt-2">
-                                    Average: Years:{' '}
+                                    Average Years:{' '}
                                     <strong>
-                                        {category.skills.reduce(
-                                            (acc, skill) => Math.max(acc, parseInt(skill.year)),
-                                            0
-                                        )}
+                                        {formatYearsLabel(getAverageYears(category.skills))}
                                     </strong>
                                 </p>
                             </motion.div>
@@ -316,17 +633,9 @@ export function Skills() {
                                         <TrendingUp className="h-6 w-6 text-primary-foreground" />
                                     </div>
                                 </motion.div>
-                                <h3 className="text-xl mb-4">Always Learning</h3>
-                                <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                                    The tech industry moves fast, and I'm committed to continuous
-                                    learning. Currently exploring:{' '}
-                                    <strong>AI/ML integration</strong>, <strong>WebAssembly</strong>
-                                    , and <strong>serverless architectures</strong>. I believe in
-                                    staying curious and adapting to new challenges.
-                                </p>
-
+                                <h3 className="text-xl mb-4">Proof to Experience</h3>
                                 <motion.div
-                                    className="flex flex-wrap justify-center gap-2 mt-6"
+                                    className="flex flex-wrap justify-center gap-2"
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: 0.6 }}
@@ -352,6 +661,16 @@ export function Skills() {
                                         )
                                     )}
                                 </motion.div>
+                                <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto mt-4">
+                                    While I have experience in a wide range of technologies, I'm
+                                    always eager to expand my skill set and take on new challenges.
+                                    The tech landscape is constantly evolving, and I strive to stay
+                                    at the forefront of emerging trends and tools. Whether it's
+                                    diving deeper into AI/ML, exploring WebAssembly, experimenting
+                                    with serverless architectures, or venturing into Web3 and Rust,
+                                    I'm committed to continuous learning and growth in the
+                                    ever-changing world of technology.
+                                </p>
                             </CardContent>
                         </Card>
                     </motion.div>

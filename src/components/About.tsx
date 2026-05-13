@@ -8,13 +8,13 @@ export function About() {
             icon: <Code className="h-6 w-6" />,
             title: 'Open Source Enthusiast',
             description:
-                'Contributing to and maintaining open source projects in a variety of languages and backgrounds',
+                'Contributing to and maintaining open source projects in a variety of languages and backgrounds. Every project is an opportunity to learn and grow, and I take pride in sharing my work with the community',
         },
         {
             icon: <Users className="h-6 w-6" />,
             title: 'Team Player',
             description:
-                'Collaborating effectively in agile environments with clear communication and code reviews',
+                'Collaborating effectively in agile environments with clear communication and code reviews. I believe that teamwork is essential for delivering high-quality software and achieving project goals.',
         },
         {
             icon: <Zap className="h-6 w-6" />,
@@ -50,34 +50,40 @@ export function About() {
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div>
                             <p className="text-lg mb-6">
-                                At University, I was taught several different languages ranging from
-                                Java to Machine Learning Python.
+                                While studying at Kingston University, I was exposed to a wide range
+                                of programming languages and technologies, including Java, C++,
+                                Python, and JavaScript. I found myself particularly drawn to web
+                                development and software engineering, which led me to pursue down
+                                the research and development field.
                             </p>
                             <p className="text-lg mb-6">
-                                While studying, I would constantly be wanting more work to do, so I
-                                tasked myself coding projects. The projects started small, such as a
-                                simple weather app and quickly turned into more complex projects,
-                                making sure to keep in mind best practices and a modular codebase
-                                with easily addressable comments for better maintainability.
+                                After graduating from my Bachelor's degree at Kingston University, I
+                                went on to do a Masters in Artificial Intelligence. I had the
+                                opportunity to work on several projects, some being personal
+                                projects which I initiated myself, and others that were a part of
+                                research papers. This included things like building an AI to scan
+                                policy documents for compliance, and building a web application to
+                                manage and visualize data. These experiences helped me develop my
+                                skills in software development and gave me a taste of what it was
+                                like to work on real projects with real-world applications.
                             </p>
-                            <p className="text-lg">
-                                Currently, I'm working on several big projects, such as:
-                                <ul>
-                                    <li>- DisTrack: Track your coding time</li>
-                                    <li>
-                                        - PhunParty: Kahoot meets JackBox Games, a party game for
-                                        all
-                                    </li>
-                                    <li>- AP: Control with your mind</li>
-                                </ul>
-                                Mainly working in a JavaScript/TypeScript and Python tech stack with
-                                frameworks (React, Next.JS, Discord.JS, Vue, Django, and FastAPI).
+                            <p className="text-lg mb-6">
+                                During this time, I've had many projects being offered to me because
+                                of my experience in leading a team and managing complex projects. As
+                                a result, I've been able to work on a satellite software competition
+                                project for the European Space Agency called LunaNet, and an AI
+                                project for the UK government regarding an artificial intelligence
+                                module in a satellite for 5G/6G networking. These projects have
+                                given me the opportunity to work on a different range of
+                                technologies and have helped me develop my skills in efficient and
+                                optimized software development while adhering to strict requirements
+                                and principles.
                             </p>
                         </div>
 
                         <div className="grid sm:grid-cols-2 gap-4">
                             {highlights.map((highlight, index) => (
-                                <Card key={index} className="p-6">
+                                <Card key={index} className="p-6 ">
                                     <CardContent className="p-0">
                                         <div className="flex items-center mb-3">
                                             <div className="p-2 bg-primary/10 rounded-lg mr-3">
