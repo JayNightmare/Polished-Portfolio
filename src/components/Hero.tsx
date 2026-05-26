@@ -2,21 +2,25 @@ import React from 'react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import {
+    Bot,
     Github,
     Linkedin,
     Mail,
     Download,
     ArrowDown,
     ArrowRight,
-    Sparkles,
+    Sparkle,
     FileText,
     MessageSquareText,
 } from 'lucide-react';
 import { motion } from 'motion/react';
-import { useState, useEffect, useRef } from 'react';
+import { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import Logo from '../assets/icon.svg';
 
 const logo = Logo;
+const HeroAIChat = lazy(() =>
+    import('./HeroAIChat').then((module) => ({ default: module.HeroAIChat }))
+);
 
 const HERO_MUSIC_TRACKS = [
     '01. Dead Metal.mp3',
@@ -27,12 +31,47 @@ const HERO_MUSIC_TRACKS = [
     '08. Meteor Shower.mp3',
 ].map((fileName) => `/music/${encodeURIComponent(fileName)}`);
 
+type AiHealthStatus = 'checking' | 'ok' | 'degraded' | 'needs_configuration';
+
+const AI_BUTTON_THEMES: Record<
+    AiHealthStatus,
+    {
+        border: string;
+        shadow: string;
+        glow: string;
+    }
+> = {
+    checking: {
+        border: 'border-[rgba(88,166,255,0.3)]',
+        shadow: 'shadow-[0_0_28px_rgba(88,166,255,0.22)]',
+        glow: 'bg-[rgba(88,166,255,0.18)]',
+    },
+    ok: {
+        border: 'border-[rgba(52,211,153,0.5)]',
+        shadow: 'shadow-[0_0_28px_rgba(16,185,129,0.24)]',
+        glow: 'bg-[rgba(16,185,129,0.18)]',
+    },
+    degraded: {
+        border: 'border-[rgba(251,191,36,0.55)]',
+        shadow: 'shadow-[0_0_28px_rgba(245,158,11,0.24)]',
+        glow: 'bg-[rgba(245,158,11,0.18)]',
+    },
+    needs_configuration: {
+        border: 'border-[rgba(248,113,113,0.55)]',
+        shadow: 'shadow-[0_0_28px_rgba(239,68,68,0.24)]',
+        glow: 'bg-[rgba(239,68,68,0.18)]',
+    },
+};
+
 export function Hero() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [newPostsCount, setNewPostsCount] = useState(0);
     const [unreadNewCount, setUnreadNewCount] = useState(0);
     const [starCount, setStarCount] = useState(0);
     const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+    const [isAiChatOpen, setIsAiChatOpen] = useState(false);
+    const [aiHealthStatus, setAiHealthStatus] = useState<AiHealthStatus>('checking');
+    const [hasOpenedAiChat, setHasOpenedAiChat] = useState(false);
     const [activeTrackIndex, setActiveTrackIndex] = useState(0);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -148,6 +187,51 @@ export function Hero() {
         }, 1400);
 
         return cleanupIdle;
+    }, [API_BASE]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+
+        const fetchAiHealth = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/health?probe=1`, {
+                    signal: controller.signal,
+                });
+
+                if (!response.ok) {
+                    throw new Error('AI health endpoint unavailable');
+                }
+
+                const payload = await response.json();
+                const nextStatus = payload?.status;
+
+                if (
+                    nextStatus === 'ok' ||
+                    nextStatus === 'degraded' ||
+                    nextStatus === 'needs_configuration'
+                ) {
+                    setAiHealthStatus(nextStatus);
+                    return;
+                }
+
+                setAiHealthStatus('degraded');
+            } catch (error) {
+                if (error instanceof Error && error.name === 'AbortError') {
+                    return;
+                }
+
+                setAiHealthStatus('degraded');
+            }
+        };
+
+        const cleanupIdle = runWhenIdle(() => {
+            void fetchAiHealth();
+        }, 2000);
+
+        return () => {
+            cleanupIdle();
+            controller.abort();
+        };
     }, [API_BASE]);
 
     // Draw stars on canvas
@@ -273,327 +357,414 @@ export function Hero() {
         setIsMusicPlaying((prev) => !prev);
     };
 
+    const openAiChat = () => {
+        setHasOpenedAiChat(true);
+        setIsAiChatOpen(true);
+    };
+
+    const aiButtonTheme = AI_BUTTON_THEMES[aiHealthStatus];
+
     return (
-        <section
-            id="home"
-            className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/20 relative overflow-hidden"
-        >
-            {/* Interactive background elements */}
-            <motion.div
-                className="absolute inset-0 opacity-30"
-                style={{
-                    background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(176, 119, 198, 0.4), transparent 50%)`,
-                }}
-            />
+        <>
+            <section
+                id="home"
+                className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/20 relative overflow-hidden"
+            >
+                {/* Interactive background elements */}
+                <motion.div
+                    className="absolute inset-0 opacity-30"
+                    style={{
+                        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(176, 119, 198, 0.4), transparent 50%)`,
+                    }}
+                />
 
-            {/* Star-based view counter */}
-            <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
+                {/* Star-based view counter */}
+                <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
 
-            {/* Floating elements */}
-            <motion.div
-                className="absolute top-20 left-20 w-4 h-4 bg-primary/20 rounded-full"
-                animate={{
-                    y: [0, -20, 0],
-                    opacity: [0.3, 0.8, 0.3],
-                }}
-                transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                }}
-            />
+                {/* Floating elements */}
+                <motion.div
+                    className="absolute top-20 left-20 w-4 h-4 bg-primary/20 rounded-full"
+                    animate={{
+                        y: [0, -20, 0],
+                        opacity: [0.3, 0.8, 0.3],
+                    }}
+                    transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                />
 
-            <motion.div
-                className="absolute bottom-32 right-32 w-6 h-6 border border-primary/30 rotate-45"
-                animate={{
-                    rotate: [45, 225, 45],
-                    scale: [1, 1.2, 1],
-                }}
-                transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                }}
-            />
+                <motion.div
+                    className="absolute bottom-32 right-32 w-6 h-6 border border-primary/30 rotate-45"
+                    animate={{
+                        rotate: [45, 225, 45],
+                        scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                />
 
-            <motion.div
-                className="absolute top-1/4 right-20 w-2 h-2 bg-primary/40 rounded-full"
-                animate={{
-                    x: [0, 10, 0],
-                    y: [0, -15, 0],
-                }}
-                transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                    delay: 1,
-                }}
-            />
+                <motion.div
+                    className="absolute top-1/4 right-20 w-2 h-2 bg-primary/40 rounded-full"
+                    animate={{
+                        x: [0, 10, 0],
+                        y: [0, -15, 0],
+                    }}
+                    transition={{
+                        duration: 2.5,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: 1,
+                    }}
+                />
 
-            <div className="container mx-auto px-4 py-20 text-center relative z-10">
-                <div className="max-w-4xl mx-auto relative">
-                    <motion.div
-                        className="absolute top-0 right-0 sm:right-4 z-30 flex items-center gap-2 sm:gap-3"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.1 }}
-                    >
-                        <div className="flex items-center gap-1.5 text-primary/90 top-[10px] relative cursor-default">
-                            <span className="cherry-bomb-one-regular text-sm sm:text-base tracking-wide text-muted-foreground/90 group-hover:text-primary transition-colors duration-300">
-                                Click Me
-                            </span>
-                            <ArrowRight className="h-4 w-4 rotate-[-20deg] text-muted-foreground/90" />
-                        </div>
-                        <motion.button
-                            type="button"
-                            onClick={toggleBackgroundMusic}
-                            aria-label={
-                                isMusicPlaying ? 'Pause background music' : 'Play background music'
-                            }
-                            aria-pressed={isMusicPlaying}
-                            className={`group relative flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 cursor-pointer ${
-                                isMusicPlaying ? '' : 'animate-pulse'
-                            }`}
-                            whileHover={{ scale: 1.08, rotate: 8 }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
+                <div className="container mx-auto px-4 py-20 text-center relative z-10">
+                    <div className="max-w-4xl mx-auto relative">
+                        <motion.div
+                            className="absolute top-0 right-0 sm:right-4 z-30 flex items-center gap-2 sm:gap-3"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.1 }}
                         >
-                            <Sparkles
-                                className={`h-3 w-3 transition-colors duration-300 fill-current ${isMusicPlaying ? 'text-[rgba(0, 128, 0, 0.8)]' : 'text-[rgba(150, 150, 150, 0.5)]'}`}
-                            />
-                        </motion.button>
-                    </motion.div>
-
-                    <motion.div>
-                        <img
-                            src={logo}
-                            alt="Logo"
-                            className="w-[24px] h-[24px] mx-auto mb-4 animate-bounce transition-transform duration-300"
-                        />
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
-                        className="mb-6"
-                    >
-                        <Badge variant="secondary" className="relative overflow-hidden group">
-                            <motion.div
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                                initial={{ x: '-100%' }}
-                                animate={{ x: '100%' }}
-                                transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    delay: 1,
-                                    ease: 'easeInOut',
-                                }}
-                            />
-                            <span className="relative z-10 flex items-center gap-2">
-                                Available for new opportunities
-                            </span>
-                        </Badge>
-                    </motion.div>
-
-                    <motion.p
-                        className="text-4xl md:text-1xl lg:text-1xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
-                        initial={{ opacity: 0, y: -50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        <motion.span
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="inline-block"
-                        >
-                            Jordan
-                            <sup>
-                                <motion.span
-                                    initial={{ opacity: 0, x: 50 }}
-                                    animate={{ opacity: 1, x: 0, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.4 }}
-                                    className="inline-block text-muted-foreground text-sm"
-                                >
-                                    Jay
-                                </motion.span>
-                            </sup>
-                        </motion.span>{' '}
-                        <motion.span
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="inline-block"
-                        >
-                            Bell
-                        </motion.span>{' '}
-                        <motion.span
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="inline-block"
-                        >
-                            Compaan
-                        </motion.span>
-                    </motion.p>
-
-                    <motion.h1
-                        className="text-6xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        <motion.span
-                            initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="inline-block"
-                        >
-                            Full-Stack Software
-                        </motion.span>{' '}
-                        <motion.span
-                            initial={{ opacity: 0, x: 50 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="inline-block"
-                        >
-                            Developer
-                        </motion.span>
-                    </motion.h1>
-
-                    <motion.p
-                        className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.8 }}
-                    >
-                        MSc in Artificial Intelligence | Open Source Developer
-                    </motion.p>
-
-                    <motion.div
-                        className="flex justify-center space-x-6 mb-8"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.2 }}
-                    >
-                        {[
-                            {
-                                href: 'https://github.com/JayNightmare',
-                                icon: Github,
-                                label: 'GitHub',
-                                new: false,
-                            },
-                            {
-                                href: 'https://linkedin.com/in/jordan-s-bell/',
-                                icon: Linkedin,
-                                label: 'LinkedIn',
-                                new: false,
-                            },
-                            { href: '/?/blog', icon: MessageSquareText, label: 'Blog', new: true },
-                            {
-                                href: 'mailto:jn3.enquiries@gmail.com',
-                                icon: Mail,
-                                label: 'Email',
-                                new: false,
-                            },
-                            {
-                                href: '/Jordan_Bell_CV.pdf',
-                                icon: FileText,
-                                label: 'Resume',
-                                new: false,
-                            },
-                        ].map((social, index) => (
-                            <motion.a
-                                key={social.label}
-                                href={social.href}
-                                target={social.href.startsWith('mailto') ? undefined : '_blank'}
-                                rel={
-                                    social.href.startsWith('mailto')
-                                        ? undefined
-                                        : 'noopener noreferrer'
+                            <div className="flex items-center gap-1.5 text-primary/90 top-[10px] relative cursor-default">
+                                <span className="cherry-bomb-one-regular text-sm sm:text-base tracking-wide text-muted-foreground/90 group-hover:text-primary transition-colors duration-300">
+                                    Play Music
+                                </span>
+                                <ArrowRight className="h-4 w-4 rotate-[-20deg] text-muted-foreground/90" />
+                            </div>
+                            <motion.button
+                                type="button"
+                                onClick={toggleBackgroundMusic}
+                                aria-label={
+                                    isMusicPlaying
+                                        ? 'Pause background music'
+                                        : 'Play background music'
                                 }
-                                className="relative p-3 rounded-full bg-muted transition-all duration-300 group rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors"
-                                whileTap={{ scale: 0.9 }}
-                                transition={{ duration: 0.1, delay: 0.1 }}
+                                aria-pressed={isMusicPlaying}
+                                className={`group relative flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 cursor-pointer ${
+                                    isMusicPlaying ? '' : 'animate-pulse'
+                                }`}
+                                whileHover={{ scale: 1.08, rotate: 8 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
                             >
-                                {social.new && unreadNewCount > 0 && (
-                                    <Badge className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 border-destructive border-2 bg-background/50 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full pointer-events-none">
-                                        <motion.div
-                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-pink/20 to-transparent"
-                                            initial={{ x: '-100%' }}
-                                            animate={{ x: '100%' }}
-                                            transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                                delay: 1,
-                                                ease: 'easeInOut',
-                                            }}
-                                        />
-                                        <span className="relative z-10">NEW</span>
-                                    </Badge>
-                                )}
-
-                                <social.icon className="h-5 w-5 relative z-10 group-hover:text-primary transition-colors duration-300" />
-                            </motion.a>
-                        ))}
-                    </motion.div>
-
-                    <motion.div
-                        className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1 }}
-                    >
-                        <motion.div
-                            whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
-                            whileTap={{ scale: 0.95 }}
-                            className="w-auto sm:w-auto"
-                        >
-                            <Button
-                                onClick={scrollToProjects}
-                                variant="default"
-                                size="lg"
-                                className="w-auto sm:w-auto group cursor-pointer"
-                            >
-                                <span>View My Work</span>
-                            </Button>
+                                <Sparkle
+                                    className={`h-2 w-2 transition-colors duration-300 fill-current ${isMusicPlaying ? 'text-[rgba(0, 128, 0, 0.8)]' : 'text-[rgba(150, 150, 150, 0.5)]'}`}
+                                />
+                            </motion.button>
                         </motion.div>
 
                         <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="w-auto sm:w-auto"
+                            className="absolute bottom-0 left-0 sm:right-4 z-30 flex items-center gap-2 sm:gap-3"
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.1 }}
                         >
-                            <Button
-                                onClick={scrollToContact}
-                                variant="outline"
-                                size="lg"
-                                className="w-auto sm:w-auto group cursor-pointer"
+                            <div className="flex items-center gap-1.5 text-primary/90 top-[10px] relative cursor-default">
+                                <span className="cherry-bomb-one-regular text-sm sm:text-base tracking-wide text-muted-foreground/90 group-hover:text-primary transition-colors duration-300">
+                                    Ask Jay
+                                </span>
+                                <ArrowRight className="h-4 w-4 rotate-[-20deg] text-muted-foreground/90" />
+                            </div>
+                            <motion.button
+                                type="button"
+                                onClick={openAiChat}
+                                aria-label="Open Jay AI chat"
+                                aria-pressed={isAiChatOpen}
+                                className={`group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border bg-[radial-gradient(circle_at_top,rgba(88,166,255,0.22),rgba(15,23,42,0.82))] transition-all duration-300 cursor-pointer ${aiButtonTheme.border} ${aiButtonTheme.shadow} ${
+                                    isAiChatOpen ? '' : 'animate-pulse'
+                                }`}
+                                whileHover={{ scale: 1.08, rotate: -8 }}
+                                whileTap={{ scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
                             >
-                                <span>Get In Touch</span>
-                            </Button>
+                                <motion.span
+                                    className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.2),transparent_55%)]"
+                                    animate={{
+                                        opacity: isAiChatOpen
+                                            ? [0.45, 0.8, 0.45]
+                                            : [0.2, 0.45, 0.2],
+                                    }}
+                                    transition={{
+                                        duration: 2.2,
+                                        repeat: Infinity,
+                                        ease: 'easeInOut',
+                                    }}
+                                />
+                                <motion.span
+                                    className={`absolute -inset-4 rounded-full blur-xl ${aiButtonTheme.glow}`}
+                                    animate={{
+                                        scale: isAiChatOpen ? [1, 1.18, 1] : [0.92, 1.06, 0.92],
+                                    }}
+                                    transition={{
+                                        duration: 2.8,
+                                        repeat: Infinity,
+                                        ease: 'easeInOut',
+                                    }}
+                                />
+                                <Bot
+                                    className={`relative z-10 h-3.5 w-3.5 transition-colors duration-300 ${
+                                        isAiChatOpen
+                                            ? 'text-[rgba(255,255,255,0.98)]'
+                                            : 'text-[rgba(191,219,254,0.96)]'
+                                    }`}
+                                />
+                            </motion.button>
                         </motion.div>
-                    </motion.div>
 
-                    {/* Scroll indicator */}
-                    <motion.div
-                        className="absolute bottom-[-4rem] left-1/2 transform -translate-x-1/2"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 1.5 }}
-                    >
-                        <motion.div
-                            animate={{ y: [0, 10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                            className="p-2 rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors duration-300"
-                            onClick={scrollToAbout}
-                        >
-                            <ArrowDown className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors duration-300" />
+                        <motion.div>
+                            <img
+                                src={logo}
+                                alt="Logo"
+                                className="w-[24px] h-[24px] mx-auto mb-4 animate-bounce transition-transform duration-300"
+                            />
                         </motion.div>
-                    </motion.div>
+
+                        <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5, ease: 'easeOut' }}
+                            className="mb-6"
+                        >
+                            <Badge variant="secondary" className="relative overflow-hidden group">
+                                <motion.div
+                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                                    initial={{ x: '-100%' }}
+                                    animate={{ x: '100%' }}
+                                    transition={{
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        delay: 1,
+                                        ease: 'easeInOut',
+                                    }}
+                                />
+                                <span className="relative z-10 flex items-center gap-2">
+                                    Research Assistant
+                                </span>
+                            </Badge>
+                        </motion.div>
+
+                        <motion.p
+                            className="text-4xl md:text-1xl lg:text-1xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
+                            initial={{ opacity: 0, y: -50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <motion.span
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.4 }}
+                                className="inline-block"
+                            >
+                                Jordan
+                                <sup>
+                                    <motion.span
+                                        initial={{ opacity: 0, x: 50 }}
+                                        animate={{ opacity: 1, x: 0, y: 0 }}
+                                        transition={{ duration: 0.6, delay: 0.4 }}
+                                        className="inline-block text-muted-foreground text-sm"
+                                    >
+                                        Jay
+                                    </motion.span>
+                                </sup>
+                            </motion.span>{' '}
+                            <motion.span
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                className="inline-block"
+                            >
+                                Bell
+                            </motion.span>{' '}
+                            <motion.span
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                className="inline-block"
+                            >
+                                Compaan
+                            </motion.span>
+                        </motion.p>
+
+                        <motion.h1
+                            className="text-6xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                        >
+                            <motion.span
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6, delay: 0.4 }}
+                                className="inline-block"
+                            >
+                                Full-Stack Software
+                            </motion.span>{' '}
+                            <motion.span
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6, delay: 0.6 }}
+                                className="inline-block"
+                            >
+                                Developer
+                            </motion.span>
+                        </motion.h1>
+
+                        <motion.p
+                            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.8 }}
+                        >
+                            MSc in Artificial Intelligence | Open Source Developer
+                        </motion.p>
+
+                        <motion.div
+                            className="flex justify-center space-x-6 mb-8"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.2 }}
+                        >
+                            {[
+                                {
+                                    href: 'https://github.com/JayNightmare',
+                                    icon: Github,
+                                    label: 'GitHub',
+                                    new: false,
+                                },
+                                {
+                                    href: 'https://linkedin.com/in/jordan-s-bell/',
+                                    icon: Linkedin,
+                                    label: 'LinkedIn',
+                                    new: false,
+                                },
+                                {
+                                    href: '/?/blog',
+                                    icon: MessageSquareText,
+                                    label: 'Blog',
+                                    new: true,
+                                },
+                                {
+                                    href: 'mailto:jn3.enquiries@gmail.com',
+                                    icon: Mail,
+                                    label: 'Email',
+                                    new: false,
+                                },
+                                {
+                                    href: '/Jordan_Bell_CV.pdf',
+                                    icon: FileText,
+                                    label: 'Resume',
+                                    new: false,
+                                },
+                            ].map((social, index) => (
+                                <motion.a
+                                    key={social.label}
+                                    href={social.href}
+                                    target={social.href.startsWith('mailto') ? undefined : '_blank'}
+                                    rel={
+                                        social.href.startsWith('mailto')
+                                            ? undefined
+                                            : 'noopener noreferrer'
+                                    }
+                                    className="relative p-3 rounded-full bg-muted transition-all duration-300 group rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors"
+                                    whileTap={{ scale: 0.9 }}
+                                    transition={{ duration: 0.1, delay: 0.1 }}
+                                >
+                                    {social.new && unreadNewCount > 0 && (
+                                        <Badge className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 z-20 border-destructive border-2 bg-background/50 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full pointer-events-none">
+                                            <motion.div
+                                                className="absolute inset-0 bg-gradient-to-r from-transparent via-pink/20 to-transparent"
+                                                initial={{ x: '-100%' }}
+                                                animate={{ x: '100%' }}
+                                                transition={{
+                                                    duration: 2,
+                                                    repeat: Infinity,
+                                                    delay: 1,
+                                                    ease: 'easeInOut',
+                                                }}
+                                            />
+                                            <span className="relative z-10">NEW</span>
+                                        </Badge>
+                                    )}
+
+                                    <social.icon className="h-5 w-5 relative z-10 group-hover:text-primary transition-colors duration-300" />
+                                </motion.a>
+                            ))}
+                        </motion.div>
+
+                        <motion.div
+                            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6"
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1 }}
+                        >
+                            <motion.div
+                                whileHover={{
+                                    scale: 1.05,
+                                    boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                                className="w-auto sm:w-auto"
+                            >
+                                <Button
+                                    onClick={scrollToProjects}
+                                    variant="default"
+                                    size="lg"
+                                    className="w-auto sm:w-auto group cursor-pointer"
+                                >
+                                    <span>View My Work</span>
+                                </Button>
+                            </motion.div>
+
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="w-auto sm:w-auto"
+                            >
+                                <Button
+                                    onClick={scrollToContact}
+                                    variant="outline"
+                                    size="lg"
+                                    className="w-auto sm:w-auto group cursor-pointer"
+                                >
+                                    <span>Get In Touch</span>
+                                </Button>
+                            </motion.div>
+                        </motion.div>
+
+                        {/* Scroll indicator */}
+                        <motion.div
+                            className="absolute bottom-[-4rem] left-1/2 transform -translate-x-1/2"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 1.5 }}
+                        >
+                            <motion.div
+                                animate={{ y: [0, 10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                className="p-2 rounded-full border border-muted-foreground/30 cursor-pointer hover:border-primary transition-colors duration-300"
+                                onClick={scrollToAbout}
+                            >
+                                <ArrowDown className="h-4 w-4 text-muted-foreground hover:text-primary transition-colors duration-300" />
+                            </motion.div>
+                        </motion.div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            {hasOpenedAiChat ? (
+                <Suspense fallback={null}>
+                    <HeroAIChat
+                        open={isAiChatOpen}
+                        onOpenChange={setIsAiChatOpen}
+                        apiBase={API_BASE}
+                    />
+                </Suspense>
+            ) : null}
+        </>
     );
 }

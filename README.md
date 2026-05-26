@@ -2,6 +2,7 @@
 <img src="https://raw.githubusercontent.com/JayNightmare/Polished-Portfolio/356db79a3142fd5ddb0463d63e82e73802596967/src/assets/icon.svg" width=32>
 
 # Polished Portfolio w/ GitHub API
+
 </div>
 
 A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a clean design approach with smooth animations and interactive elements.
@@ -22,6 +23,7 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 18** - Modern React with hooks and concurrent features
 - **TypeScript** - Type-safe development
 - **Vite** - Fast build tool and development server
@@ -29,15 +31,18 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 - **Motion** - Smooth animations and interactions
 
 ### UI Components
+
 - **Radix UI** - Accessible, unstyled UI components
 - **Lucide React** - Beautiful, customizable icons
 - **React Hook Form** - Performant forms with easy validation
 
 ### Routing & State
+
 - **React Router DOM** - Client-side routing
 - **Custom Hooks** - GitHub API integration
 
 ### Development Tools
+
 - **ESLint** - Code linting and formatting
 - **Prettier** - Code formatting
 - **PostCSS** - CSS processing
@@ -72,23 +77,34 @@ cp .env.example .env.local
 ```
 
 Add your environment variables:
+
 ```env
 VITE_GITHUB_TOKEN=your_github_token_here
 VITE_DISCORD_HOOK=your_discord_webhook_url
 ```
 
+If you are using the portfolio API server, create a server environment file as well:
+
+```env
+AI_API_KEY=your_provider_api_key_here
+AI_MODEL=gpt-4.1-mini
+AI_BASE_URL=https://openrouter.ai/api/v1
+```
+
+`AI_BASE_URL` should point to an OpenAI-compatible API base URL. OpenRouter works directly, and OpenAI-compatible Hugging Face deployments can work with the same server route. The server still accepts `OPENAI_*` env vars as a backward-compatible fallback.
+
 4. **Start the development server**
-   
+
 ```bash
 npm run dev
-  ```
+```
 
 5. **Replace GitHub Username**
 
 Go to the search tab in VSCode and replace "jaynightmare" (not cap sensitive) with your GitHub username.
 
 1. **Open your browser**
-   
+
 Navigate to `http://localhost:5173` to view the application.
 
 ## 📜 Available Scripts
@@ -104,18 +120,23 @@ Navigate to `http://localhost:5173` to view the application.
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `VITE_GITHUB_TOKEN` | GitHub personal access token for API calls | Yes |
-| `VITE_DISCORD_HOOK` | Discord webhook URL for contact form | Yes |
+| Variable            | Description                                                                                                                                                   | Required    |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `VITE_GITHUB_TOKEN` | GitHub personal access token for API calls                                                                                                                    | Yes         |
+| `VITE_DISCORD_HOOK` | Discord webhook URL for contact form                                                                                                                          | Yes         |
+| `AI_API_KEY`        | Server-side API key for the hero AI chat. Falls back to `OPENAI_API_KEY` in code.                                                                             | Usually yes |
+| `AI_MODEL`          | Server-side model name for the hero AI chat. Falls back to `OPENAI_MODEL` in code.                                                                            | No          |
+| `AI_BASE_URL`       | OpenAI-compatible API base URL for the hero AI chat, such as OpenRouter or OpenAI-compatible Hugging Face endpoints. Falls back to `OPENAI_BASE_URL` in code. | No          |
 
 ### GitHub Token
+
 1. GitHub -> Settings
 2. Scroll to the bottom -> Developer Settings
 3. Personal Access Token -> Tokens (classic)
 4. Copy Key
 
 ### Discord Hook
+
 1. Make a server on Discord (or use a pre-existing one)
 2. Edit a text channel
 3. Integrations -> Webhooks
@@ -124,6 +145,7 @@ Navigate to `http://localhost:5173` to view the application.
 ### Tailwind CSS
 
 The project uses Tailwind CSS v4 with custom configuration. Styles are defined in:
+
 - `styles/globals.css` - Global styles and CSS variables
 - `tailwind.config.js` - Tailwind configuration
 - `postcss.config.cjs` - PostCSS configuration
@@ -131,6 +153,7 @@ The project uses Tailwind CSS v4 with custom configuration. Styles are defined i
 ## 📱 Components Overview
 
 ### Core Components:
+
 - **Header** - Navigation and theme toggle
 - **Hero** - Landing section with interactive background
 - **About** - Personal information and introduction
@@ -140,13 +163,16 @@ The project uses Tailwind CSS v4 with custom configuration. Styles are defined i
 - **Footer** - Site footer with additional links
 
 ### Additional Components:
+
 - **All Projects** - All the projects in your GitHub (or manually added projects)
 - **GitHub Heatmap** - Heatmap of your contributions on GitHub
 - **Animated Background** - Simple Animation playing in the background
 - **Typing Text** - Types out text entered in the parameter
 
 ### UI Components:
+
 The project includes a comprehensive set of reusable UI components built on Radix UI:
+
 - Buttons, Cards, Dialogs, Forms
 - Accordion, Tabs, Tooltips
 - Navigation, Breadcrumbs, Pagination
@@ -184,6 +210,7 @@ npm run build
 ## ⚠️ Important Notes
 
 ### Environment Setup
+
 Make sure to configure your environment variables properly for GitHub integration and contact form functionality to work correctly.
 
 ## 📄 License
