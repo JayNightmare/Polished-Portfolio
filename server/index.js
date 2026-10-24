@@ -25,7 +25,7 @@ const port = process.env.PORT || 3001;
 const SITE_URL = (process.env.SITE_URL || 'https://portfolio.nexusgit.info').replace(/\/$/, '');
 const AI_API_KEY = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || '';
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
-const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb';
+const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'ZbUuLr7EbNxVtnwQ3kE5';
 const elevenLabsClient = ELEVENLABS_API_KEY
     ? new ElevenLabsClient({ apiKey: ELEVENLABS_API_KEY })
     : null;
