@@ -1,84 +1,106 @@
 <!doctype html>
 <html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Jay Bell | Full-Stack Developer Portfolio | React, TypeScript, Node.js</title>
+        <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.ico" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jay Bell | Full-Stack Developer Portfolio | React, TypeScript, Node.js</title>
-  <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.ico" />
+        <!-- SEO -->
+        <meta
+            name="description"
+            content="Jay Bell is a full-stack developer building React, TypeScript, and Node.js projects. Explore portfolio work, technical skills, open-source contributions, and blog updates."
+        />
+        <meta
+            name="keywords"
+            content="Jay Bell, full-stack developer, portfolio, React developer, TypeScript, Node.js, JavaScript, web development, open source"
+        />
+        <meta
+            name="robots"
+            content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+        />
+        <link rel="canonical" href="https://portfolio.nexusgit.info/" />
+        <meta name="author" content="Jay Bell" />
 
-  <!-- SEO -->
-  <meta name="description"
-    content="Jay Bell is a full-stack developer building React, TypeScript, and Node.js projects. Explore portfolio work, technical skills, open-source contributions, and blog updates." />
-  <meta name="keywords"
-    content="Jay Bell, full-stack developer, portfolio, React developer, TypeScript, Node.js, JavaScript, web development, open source" />
-  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
-  <link rel="canonical" href="https://portfolio.nexusgit.info/" />
-  <meta name="author" content="Jay Bell" />
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Jay Bell Portfolio" />
+        <meta property="og:title" content="Jay Bell | Full-Stack Developer Portfolio" />
+        <meta
+            property="og:description"
+            content="Explore full-stack development projects built with React, TypeScript, and Node.js, plus technical blog updates and contact details."
+        />
+        <meta property="og:url" content="https://portfolio.nexusgit.info/" />
+        <meta
+            property="og:image"
+            content="https://portfolio.nexusgit.info/companies/NexusScriptureLogo.jpg"
+        />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Jay Bell Portfolio" />
-  <meta property="og:title" content="Jay Bell | Full-Stack Developer Portfolio" />
-  <meta property="og:description"
-    content="Explore full-stack development projects built with React, TypeScript, and Node.js, plus technical blog updates and contact details." />
-  <meta property="og:url" content="https://portfolio.nexusgit.info/" />
-  <meta property="og:image" content="https://portfolio.nexusgit.info/companies/NexusScriptureLogo.jpg" />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Jay Bell | Full-Stack Developer Portfolio" />
+        <meta
+            name="twitter:description"
+            content="Portfolio featuring React, TypeScript, and Node.js projects, technical skills, and software engineering blog posts."
+        />
+        <meta
+            name="twitter:image"
+            content="https://portfolio.nexusgit.info/companies/NexusScriptureLogo.jpg"
+        />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Jay Bell | Full-Stack Developer Portfolio" />
-  <meta name="twitter:description"
-    content="Portfolio featuring React, TypeScript, and Node.js projects, technical skills, and software engineering blog posts." />
-  <meta name="twitter:image" content="https://portfolio.nexusgit.info/companies/NexusScriptureLogo.jpg" />
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Moirai+One&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Major+Mono+Display&family=Sometype+Mono:wght@400;500;600&family=Cherry+Bomb+One&family=Saira+Stencil+One&family=Abhaya+Libre:wght@400;500;600;700;800&family=Limelight&display=swap"
+            rel="stylesheet"
+        />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Moirai+One&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Major+Mono+Display&family=Sometype+Mono:wght@400;500;600&family=Cherry+Bomb+One&family=Saira+Stencil+One&family=Abhaya+Libre:wght@400;500;600;700;800&family=Limelight&display=swap"
-    rel="stylesheet">
+        <!-- Performance hints -->
+        <link rel="preconnect" href="https://api.github.com" crossorigin />
+        <link rel="preconnect" href="https://opengraph.githubassets.com" crossorigin />
+        <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+        <link rel="dns-prefetch" href="https://api.github.com" />
+        <link rel="dns-prefetch" href="https://opengraph.githubassets.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
 
-  <!-- Performance hints -->
-  <link rel="preconnect" href="https://api.github.com" crossorigin />
-  <link rel="preconnect" href="https://opengraph.githubassets.com" crossorigin />
-  <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-  <link rel="dns-prefetch" href="https://api.github.com" />
-  <link rel="dns-prefetch" href="https://opengraph.githubassets.com" />
-  <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <!-- Impact Verification -->
+        <meta name="impact-site-verification" value="fb8dc46e-6388-444a-a578-bb401c6088c6" />
 
-  <!-- Impact Verification -->
-  <meta name='impact-site-verification' value='fb8dc46e-6388-444a-a578-bb401c6088c6'>
+        <!-- Start SPA redirect script -->
+        <script type="text/javascript">
+            // Single Page Apps for GitHub Pages
+            // MIT License
+            // https://github.com/rafgraph/spa-github-pages
+            // This script checks to see if a redirect is present in the query string,
+            // converts it back into the correct url and adds it to the
+            // browser's history using window.history.replaceState(...),
+            // which won't cause the browser to attempt to load the new url.
+            // When the single page app is loaded further down in this file,
+            // the correct url will be waiting in the browser's history for
+            // the single page app to route accordingly.
+            (function (l) {
+                if (l.search[1] === '/') {
+                    var decoded = l.search
+                        .slice(1)
+                        .split('&')
+                        .map(function (s) {
+                            return s.replace(/~and~/g, '&');
+                        })
+                        .join('?');
+                    window.history.replaceState(
+                        null,
+                        null,
+                        l.pathname.slice(0, -1) + decoded + l.hash
+                    );
+                }
+            })(window.location);
+        </script>
+        <!-- End SPA redirect script -->
+    </head>
 
-  <!-- Start SPA redirect script -->
-  <script type="text/javascript">
-    // Single Page Apps for GitHub Pages
-    // MIT License
-    // https://github.com/rafgraph/spa-github-pages
-    // This script checks to see if a redirect is present in the query string,
-    // converts it back into the correct url and adds it to the
-    // browser's history using window.history.replaceState(...),
-    // which won't cause the browser to attempt to load the new url.
-    // When the single page app is loaded further down in this file,
-    // the correct url will be waiting in the browser's history for
-    // the single page app to route accordingly.
-    (function (l) {
-      if (l.search[1] === '/') {
-        var decoded = l.search.slice(1).split('&').map(function (s) {
-          return s.replace(/~and~/g, '&')
-        }).join('?');
-        window.history.replaceState(null, null,
-          l.pathname.slice(0, -1) + decoded + l.hash
-        );
-      }
-    }(window.location))
-  </script>
-  <!-- End SPA redirect script -->
-</head>
-
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>
