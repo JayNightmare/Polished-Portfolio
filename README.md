@@ -87,8 +87,8 @@ If you are using the portfolio API server, create a server environment file as w
 
 ```env
 AI_API_KEY=your_provider_api_key_here
-AI_MODEL=gpt-4.1-mini
-AI_BASE_URL=https://openrouter.ai/api/v1
+AI_MODEL=llama-3.1-8b-instant
+AI_BASE_URL=https://api.groq.com/openai/v1
 ```
 
 `AI_BASE_URL` should point to an OpenAI-compatible API base URL. OpenRouter works directly, and OpenAI-compatible Hugging Face deployments can work with the same server route. The server still accepts `OPENAI_*` env vars as a backward-compatible fallback.

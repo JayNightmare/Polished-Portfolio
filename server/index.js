@@ -19,11 +19,11 @@ const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVD
 const elevenLabsClient = ELEVENLABS_API_KEY
     ? new ElevenLabsClient({ apiKey: ELEVENLABS_API_KEY })
     : null;
-const AI_MODEL = process.env.AI_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+const AI_MODEL = process.env.AI_MODEL || process.env.OPENAI_MODEL || 'llama-3.1-8b-instant';
 const AI_BASE_URL = (
     process.env.AI_BASE_URL ||
     process.env.OPENAI_BASE_URL ||
-    'https://api.openai.com/v1'
+    'https://api.groq.com/openai/v1'
 ).replace(/\/$/, '');
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'JayNightmare';
 const GITHUB_PROFILE_URL = `https://github.com/${GITHUB_USERNAME}`;
