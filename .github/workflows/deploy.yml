@@ -24,7 +24,6 @@ jobs:
       VITE_DISCORD_HOOK: ${{ secrets.VITE_DISCORD_HOOK }}
       VITE_API_BASE: ${{ secrets.VITE_API_BASE }}
       VITE_ADMIN_TOKEN: ${{ secrets.VITE_ADMIN_TOKEN }}
-      VITE_ELEVENLABS_API_KEY: ${{ secrets.VITE_ELEVENLABS_API_KEY }}
 
     steps:
       - name: Checkout repository

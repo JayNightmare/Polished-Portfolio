@@ -57,7 +57,7 @@ const PORTFOLIO_LINKS = {
     skills: '/#skills',
 };
 
-const ADMIN_TOKEN = process.env.VITE_ADMIN_TOKEN;
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || process.env.VITE_ADMIN_TOKEN;
 const chatRateLimitStore = new Map();
 const projectContextCache = {
     expiresAt: 0,
