@@ -120,13 +120,15 @@ Navigate to `http://localhost:5173` to view the application.
 
 ### Environment Variables
 
-| Variable            | Description                                                                                                                                                   | Required    |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `VITE_GITHUB_TOKEN` | GitHub personal access token for API calls                                                                                                                    | Yes         |
-| `VITE_DISCORD_HOOK` | Discord webhook URL for contact form                                                                                                                          | Yes         |
-| `AI_API_KEY`        | Server-side API key for the hero AI chat. Falls back to `OPENAI_API_KEY` in code.                                                                             | Usually yes |
-| `AI_MODEL`          | Server-side model name for the hero AI chat. Falls back to `OPENAI_MODEL` in code.                                                                            | No          |
-| `AI_BASE_URL`       | OpenAI-compatible API base URL for the hero AI chat, such as OpenRouter or OpenAI-compatible Hugging Face endpoints. Falls back to `OPENAI_BASE_URL` in code. | No          |
+| Variable              | Description                                                                                                                                                   | Required    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `VITE_GITHUB_TOKEN`   | GitHub personal access token for API calls                                                                                                                    | Yes         |
+| `VITE_DISCORD_HOOK`   | Discord webhook URL for contact form                                                                                                                          | Yes         |
+| `AI_API_KEY`          | Server-side API key for the hero AI chat. Falls back to `OPENAI_API_KEY` in code.                                                                             | Usually yes |
+| `AI_MODEL`            | Server-side model name for the hero AI chat. Falls back to `OPENAI_MODEL` in code.                                                                            | No          |
+| `AI_BASE_URL`         | OpenAI-compatible API base URL for the hero AI chat, such as OpenRouter or OpenAI-compatible Hugging Face endpoints. Falls back to `OPENAI_BASE_URL` in code. | No          |
+| `ELEVENLABS_API_KEY`  | Server-side key for Ask Jay voice replies. The ElevenLabs CLI onboarding stores it in the root `.env.local`; never expose it to browser code.                 | Optional    |
+| `ELEVENLABS_VOICE_ID` | Optional ElevenLabs voice ID. Defaults to the sample George voice (`JBFqnCBsd6RMkjVDRZzb`).                                                                   | No          |
 
 ### GitHub Token
 

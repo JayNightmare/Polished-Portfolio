@@ -4,3 +4,5 @@ build/
 node_modules/
 guidelines/
 Diagnostics/
+# Local secrets written by `elevenlabs onboard`
+/.env.local

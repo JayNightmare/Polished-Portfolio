@@ -1,15 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { MongoClient, ObjectId } from 'mongodb';
 import AI_PROFILE_CONTEXT, { CURATED_PROJECT_PROFILES } from './aiProfileContext.js';
 
+dotenv.config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') });
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 const SITE_URL = (process.env.SITE_URL || 'https://portfolio.nexusgit.info').replace(/\/$/, '');
 const AI_API_KEY = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || '';
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || '';
+const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb';
+const elevenLabsClient = ELEVENLABS_API_KEY
+    ? new ElevenLabsClient({ apiKey: ELEVENLABS_API_KEY })
+    : null;
 const AI_MODEL = process.env.AI_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
 const AI_BASE_URL = (
     process.env.AI_BASE_URL ||
@@ -960,6 +969,43 @@ app.post('/api/chat/stream', chatRateLimit, async (req, res) => {
         }
 
         res.write('Thought too hard and died of cringe');
+        res.end();
+    }
+});
+
+app.post('/api/chat/speech', chatRateLimit, async (req, res) => {
+    const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
+
+    if (!text) {
+        return res.status(400).json({ error: 'Text to speak is required.' });
+    }
+    if (text.length > CHAT_MAX_RESPONSE_LENGTH) {
+        return res.status(413).json({ error: 'Text to speak is too long.' });
+    }
+    if (!elevenLabsClient) {
+        return res.status(503).json({ error: 'Voice output is not configured.' });
+    }
+
+    try {
+        const audioStream = await elevenLabsClient.textToSpeech.convert(ELEVENLABS_VOICE_ID, {
+            text,
+            modelId: 'eleven_v4',
+        });
+
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Cache-Control', 'no-store');
+        for await (const chunk of audioStream) {
+            if (res.destroyed) {
+                return;
+            }
+            res.write(Buffer.from(chunk));
+        }
+        res.end();
+    } catch (error) {
+        console.error('Error generating chat speech:', error);
+        if (!res.headersSent) {
+            return res.status(502).json({ error: 'Voice output is unavailable right now.' });
+        }
         res.end();
     }
 });

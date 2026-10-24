@@ -1,8 +1,9 @@
-import { Fragment, type ReactNode, useEffect, useRef, useState } from 'react';
+import { Fragment, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { Bot, Lightbulb, Orbit, Send, Sparkles, Waves } from 'lucide-react';
 
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from './ui/drawer';
 import { Button } from './ui/button';
+import { Switch } from './ui/switch';
 import { Textarea } from './ui/textarea';
 
 type ChatRole = 'assistant' | 'user';
@@ -189,12 +190,45 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
+    const [readAloudEnabled, setReadAloudEnabled] = useState(false);
+    const [isGeneratingSpeech, setIsGeneratingSpeech] = useState(false);
+    const [voiceStatusMessage, setVoiceStatusMessage] = useState<string | null>(null);
     const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
     const activeRequestRef = useRef<AbortController | null>(null);
+    const speechRequestRef = useRef<AbortController | null>(null);
+    const speechAudioRef = useRef<HTMLAudioElement | null>(null);
+    const speechAudioUrlRef = useRef<string | null>(null);
+    const voiceEnabledRef = useRef(false);
+
+    const stopSpeech = useCallback(() => {
+        speechRequestRef.current?.abort();
+        speechRequestRef.current = null;
+
+        const audio = speechAudioRef.current;
+        if (audio) {
+            audio.onended = null;
+            audio.onerror = null;
+            audio.pause();
+            audio.src = '';
+            speechAudioRef.current = null;
+        }
+
+        if (speechAudioUrlRef.current) {
+            URL.revokeObjectURL(speechAudioUrlRef.current);
+            speechAudioUrlRef.current = null;
+        }
+
+        setIsGeneratingSpeech(false);
+    }, []);
 
     useEffect(() => {
         return () => {
             activeRequestRef.current?.abort();
+            speechRequestRef.current?.abort();
+            speechAudioRef.current?.pause();
+            if (speechAudioUrlRef.current) {
+                URL.revokeObjectURL(speechAudioUrlRef.current);
+            }
         };
     }, []);
 
@@ -206,13 +240,95 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
         activeRequestRef.current?.abort();
         activeRequestRef.current = null;
         setIsLoading(false);
-    }, [open]);
+        stopSpeech();
+    }, [open, stopSpeech]);
 
     useEffect(() => {
         if (!open) return;
 
         endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }, [messages, open]);
+
+    const playReplyAudio = useCallback(
+        async (text: string) => {
+            if (!voiceEnabledRef.current || !text.trim()) {
+                return;
+            }
+
+            stopSpeech();
+            const controller = new AbortController();
+            speechRequestRef.current = controller;
+            setIsGeneratingSpeech(true);
+            setVoiceStatusMessage(null);
+
+            try {
+                const response = await fetch(`${apiBase}/api/chat/speech`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    signal: controller.signal,
+                    body: JSON.stringify({
+                        text: text.replace(CHAT_MARKDOWN_LINK_PATTERN, '$1'),
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Voice generation failed with status ${response.status}.`);
+                }
+
+                const audioBlob = await response.blob();
+                if (controller.signal.aborted || !voiceEnabledRef.current) {
+                    return;
+                }
+                if (!audioBlob.size) {
+                    throw new Error('Voice generation returned empty audio.');
+                }
+
+                const audioUrl = URL.createObjectURL(audioBlob);
+                speechAudioUrlRef.current = audioUrl;
+                const audio = new Audio(audioUrl);
+                speechAudioRef.current = audio;
+                audio.onended = () => {
+                    if (speechAudioRef.current === audio) {
+                        stopSpeech();
+                    }
+                };
+                audio.onerror = () => {
+                    if (speechAudioRef.current === audio) {
+                        stopSpeech();
+                        setVoiceStatusMessage(
+                            'Voice playback failed. The text reply is still available.'
+                        );
+                    }
+                };
+
+                await audio.play();
+            } catch (error) {
+                if (error instanceof Error && error.name === 'AbortError') {
+                    return;
+                }
+
+                console.error('Error generating voice for chat reply:', error);
+                setVoiceStatusMessage('Voice output failed. The text reply is still available.');
+            } finally {
+                if (speechRequestRef.current === controller) {
+                    speechRequestRef.current = null;
+                    setIsGeneratingSpeech(false);
+                }
+            }
+        },
+        [apiBase, stopSpeech]
+    );
+
+    const handleReadAloudChange = (enabled: boolean) => {
+        voiceEnabledRef.current = enabled;
+        setReadAloudEnabled(enabled);
+        setVoiceStatusMessage(null);
+        if (!enabled) {
+            stopSpeech();
+        }
+    };
 
     const sendMessage = async (rawPrompt: string) => {
         const prompt = rawPrompt.trim();
@@ -222,6 +338,8 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
         }
 
         console.log('Chat input:', prompt);
+        stopSpeech();
+        setVoiceStatusMessage(null);
 
         const userMessage = createMessage('user', prompt);
         const assistantMessage = createMessage('assistant', '');
@@ -292,18 +410,18 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
 
             console.log('Raw streamed assistant reply:', accumulatedReply);
 
+            const finalReply = accumulatedReply.trim() || 'Thought too hard and died of cringe...';
             setMessages((currentMessages) =>
                 currentMessages.map((message) =>
                     message.id === assistantMessage.id
-                        ? {
-                              ...message,
-                              content:
-                                  accumulatedReply.trim() ||
-                                  'Thought too hard and died of cringe...',
-                          }
+                        ? { ...message, content: finalReply }
                         : message
                 )
             );
+
+            if (voiceEnabledRef.current) {
+                void playReplyAudio(finalReply);
+            }
         } catch (error) {
             if (error instanceof Error && error.name === 'AbortError') {
                 return;
@@ -456,10 +574,21 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
                             disabled={isLoading}
                         />
 
-                        <div className="flex items-center justify-between gap-3">
-                            <p className="text-xs text-muted-foreground">
-                                Public portfolio chat with live streaming replies
-                            </p>
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                                <Switch
+                                    id="ask-jay-read-aloud"
+                                    checked={readAloudEnabled}
+                                    onCheckedChange={handleReadAloudChange}
+                                    aria-label="Read Ask Jay replies aloud"
+                                />
+                                <label
+                                    htmlFor="ask-jay-read-aloud"
+                                    className="text-xs text-muted-foreground"
+                                >
+                                    Read answers aloud
+                                </label>
+                            </div>
 
                             <Button
                                 type="submit"
@@ -470,6 +599,17 @@ export function HeroAIChat({ open, onOpenChange, apiBase }: HeroAIChatProps) {
                                 Send
                             </Button>
                         </div>
+
+                        <p className="text-xs text-muted-foreground">
+                            Public portfolio chat with live streaming replies
+                            {isGeneratingSpeech ? ' Generating voice reply…' : ''}
+                        </p>
+
+                        {voiceStatusMessage ? (
+                            <p role="status" className="text-xs text-muted-foreground">
+                                {voiceStatusMessage}
+                            </p>
+                        ) : null}
 
                         {statusMessage ? (
                             <p className="text-xs text-muted-foreground">{statusMessage}</p>
