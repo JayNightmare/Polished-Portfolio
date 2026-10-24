@@ -1,5 +1,7 @@
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
+import { Switch } from './ui/switch';
+import { useReducedMotionSetting } from './hooks/useReducedMotionSetting';
 import { Github, Linkedin, Mail, Heart, FileText, MessageSquareText } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -7,6 +9,7 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
     const location = useLocation();
     const navigate = useNavigate();
+    const [reducedMotion, setReducedMotion] = useReducedMotionSetting();
 
     const socialLinks = [
         {
@@ -126,6 +129,21 @@ export function Footer() {
                                     jn3.enquiries@gmail.com
                                 </a>
                                 <p className="text-sm text-muted-foreground">London, UK</p>
+                            </div>
+
+                            <h4 className="mb-2 mt-6">Accessibility</h4>
+                            <div className="flex items-center gap-2">
+                                <Switch
+                                    id="site-reduced-motion"
+                                    checked={reducedMotion}
+                                    onCheckedChange={setReducedMotion}
+                                />
+                                <label
+                                    htmlFor="site-reduced-motion"
+                                    className="text-sm text-muted-foreground"
+                                >
+                                    Reduce animations
+                                </label>
                             </div>
                         </div>
                     </div>
