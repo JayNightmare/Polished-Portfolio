@@ -1,3 +1,4 @@
+<!-- Jay was here -->
 <div align=center>
 <img src="https://raw.githubusercontent.com/JayNightmare/Polished-Portfolio/356db79a3142fd5ddb0463d63e82e73802596967/src/assets/icon.svg" width=32>
 
