@@ -459,7 +459,7 @@ export function Hero() {
                         </motion.div>
 
                         <motion.div
-                            className="absolute bottom-0 left-0 sm:right-4 z-30 flex items-center gap-2 sm:gap-3"
+                            className="absolute bottom-0 left-0 sm:right-auto z-30 flex items-center gap-2 sm:gap-3"
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 1.1 }}
@@ -543,54 +543,17 @@ export function Hero() {
                                     }}
                                 />
                                 <span className="relative z-10 flex items-center gap-2">
-                                    Research Assistant
+                                    NexusGit
                                 </span>
                             </Badge>
                         </motion.div>
 
-                        <motion.p
-                            className="text-4xl md:text-1xl lg:text-1xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
-                            initial={{ opacity: 0, y: -50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                        >
-                            <motion.span
-                                initial={{ opacity: 0, x: -50 }}
-                                animate={{ opacity: 1, x: 0, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.4 }}
-                                className="inline-block"
-                            >
-                                Jordan
-                                <sup>
-                                    <motion.span
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0, y: 0 }}
-                                        transition={{ duration: 0.6, delay: 0.4 }}
-                                        className="inline-block text-muted-foreground text-sm"
-                                    >
-                                        Jay
-                                    </motion.span>
-                                </sup>
-                            </motion.span>{' '}
-                            <motion.span
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.6 }}
-                                className="inline-block"
-                            >
-                                Bell
-                            </motion.span>{' '}
-                            <motion.span
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0, y: 0 }}
-                                transition={{ duration: 0.6, delay: 0.6 }}
-                                className="inline-block"
-                            >
-                                Compaan
-                            </motion.span>
-                        </motion.p>
+                        <p className="hero-intro-text hero-intro-gradient text-4xl md:text-1xl lg:text-1xl mb-6">
+                            Jordan<sup className="text-muted-foreground text-sm">Jay</sup> Bell
+                            Compaan
+                        </p>
 
-                        <motion.h1
+                        <motion.div
                             className="text-6xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent"
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -600,29 +563,19 @@ export function Hero() {
                                 initial={{ opacity: 0, x: -50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.6, delay: 0.4 }}
-                                className="inline-block"
+                                className="block"
                             >
-                                Full-Stack Software
+                                AI Researcher
                             </motion.span>{' '}
                             <motion.span
                                 initial={{ opacity: 0, x: 50 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.6, delay: 0.6 }}
-                                className="inline-block"
+                                className="block"
                             >
-                                Developer
+                                Software Developer
                             </motion.span>
-                        </motion.h1>
-
-                        <motion.p
-                            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                        >
-                            MSc in Artificial Intelligence | Open Source Developer
-                        </motion.p>
-
+                        </motion.div>
                         <motion.div
                             className="flex justify-center space-x-6 mb-8"
                             initial={{ opacity: 0, y: 30 }}

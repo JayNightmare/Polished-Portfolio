@@ -221,6 +221,43 @@ html {
     background: #a7a7a7;
 }
 
+.hero-intro-gradient {
+    color: var(--primary);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) and
+    (color: color-mix(in srgb, white, transparent)) {
+    @media (forced-colors: none) {
+        .hero-intro-gradient {
+            background-image: linear-gradient(
+                to right,
+                var(--primary),
+                color-mix(in srgb, var(--primary) 60%, transparent)
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    }
+}
+
+/* Keep the text readable even if the animation never starts or stalls. */
+@media (prefers-reduced-motion: no-preference) {
+    :root:not([data-reduced-motion='true']) .hero-intro-text {
+        animation: hero-intro-fade-in 650ms ease-out;
+    }
+}
+
+@keyframes hero-intro-fade-in {
+    from {
+        opacity: 0.65;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     * {

@@ -65,13 +65,13 @@ git clone https://github.com/JayNightmare/Polished-Portfolio.git
 cd Polished-Portfolio
 ```
 
-2. **Install dependencies**
+1. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-3. **Create environment file**
+1. **Create environment file**
 
 ```bash
 cp .env.example .env.local
@@ -94,13 +94,13 @@ AI_BASE_URL=https://api.groq.com/openai/v1
 
 `AI_BASE_URL` should point to an OpenAI-compatible API base URL. OpenRouter works directly, and OpenAI-compatible Hugging Face deployments can work with the same server route. The server still accepts `OPENAI_*` env vars as a backward-compatible fallback.
 
-4. **Start the development server**
+1. **Start the development server**
 
 ```bash
 npm run dev
 ```
 
-5. **Replace GitHub Username**
+1. **Replace GitHub Username**
 
 Go to the search tab in VSCode and replace "jaynightmare" (not cap sensitive) with your GitHub username.
 
@@ -155,24 +155,25 @@ The project uses Tailwind CSS v4 with custom configuration. Styles are defined i
 
 ## 📱 Components Overview
 
-### Core Components:
+### Core Components
 
 - **Header** - Navigation and theme toggle
 - **Hero** - Landing section with interactive background
+  - The name, title, and subtitle fade in without moving. They show immediately as static text if the animation is unavailable or reduced motion is enabled.
 - **About** - Personal information and introduction
 - **Skills** - Technical skills showcase
 - **Projects** - Featured project gallery
 - **Contact** - Contact form and social links
 - **Footer** - Site footer with additional links
 
-### Additional Components:
+### Additional Components
 
 - **All Projects** - All the projects in your GitHub (or manually added projects)
 - **GitHub Heatmap** - Heatmap of your contributions on GitHub
 - **Animated Background** - Simple Animation playing in the background
 - **Typing Text** - Types out text entered in the parameter
 
-### UI Components:
+### UI Components
 
 The project includes a comprehensive set of reusable UI components built on Radix UI:
 
@@ -183,7 +184,7 @@ The project includes a comprehensive set of reusable UI components built on Radi
 
 ## 🚀 Deployment
 
-### Automatic Deployment:
+### Automatic Deployment
 
 The project includes automated deployment to GitHub Pages:
 
@@ -192,7 +193,7 @@ The project includes automated deployment to GitHub Pages:
 3. **Build process** runs tests, builds the app, and generates sitemap
 4. **Deployment** happens automatically to GitHub Pages
 
-### Manual Deployment:
+### Manual Deployment
 
 ```bash
 # Build the project
